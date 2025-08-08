@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@theme {
+  --font-inter: var(--font-inter);
+  --font-geist-mono: var(--font-geist-mono);
+  --font-poppins: var(--font-poppins);
+}
