@@ -9,7 +9,7 @@ const classNameProp: RowData = {
 
 const styleProp: RowData = {
   prop: <code>style?</code>,
-  type: <SyntaxHighlighterServer>CSSProperties</SyntaxHighlighterServer>,
+  type: <SyntaxHighlighterServer>React.CSSProperties</SyntaxHighlighterServer>,
   description:
     "Optional inline styles to apply to the component's root element.",
   defaultValue: <SyntaxHighlighterServer>undefined</SyntaxHighlighterServer>,

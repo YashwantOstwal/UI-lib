@@ -1,19 +1,5 @@
 import { CSSProperties } from "react";
 import { ParallaxCardsProps } from "./parallax-cards.types";
-export const MOCK_PROPS_PARALLAX_CARDS: ParallaxCardsProps = {
-  maxStackedCards: 3,
-  top: "50px",
-  children: ["#E7E7E7", "#D8D8D8", "#C9C9C9", "#BABABA", "#ABABAB"].map(
-    (backgroundColor, i) => (
-      <PlaceHolder
-        key={"card-" + (i + 1)}
-        style={{ backgroundColor }}
-        sNo={i + 1}
-      />
-    ),
-  ),
-};
-
 const PlaceHolder = ({ style, sNo }: { style: CSSProperties; sNo: number }) => (
   <div
     className="size-full p-7 opacity-85 sm:p-10"
@@ -59,3 +45,17 @@ const PlaceHolder = ({ style, sNo }: { style: CSSProperties; sNo: number }) => (
     </div>
   </div>
 );
+
+export const MOCK_PROPS_PARALLAX_CARDS: ParallaxCardsProps = {
+  maxStackedCards: 3,
+  top: "50px",
+  children: ["#E7E7E7", "#D8D8D8", "#C9C9C9", "#BABABA", "#ABABAB"].map(
+    (backgroundColor, i) => (
+      <PlaceHolder
+        key={"card-" + (i + 1)}
+        style={{ backgroundColor }}
+        sNo={i + 1}
+      />
+    ),
+  ),
+};

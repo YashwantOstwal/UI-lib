@@ -219,7 +219,7 @@ export const ROOT_DIRECTORY: DirectoryItem[] = [
   },
 ];
 export const DEFAULT_ACTIVE_FILE: ActiveFile = {
-  absolutePath: "components/text-switcher.demo.tsx",
+  absolutePath: "components/text-switcher/text-switcher.demo.tsx",
   code: INDEX_TSX,
 };
 

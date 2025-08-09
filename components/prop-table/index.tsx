@@ -40,7 +40,7 @@ export default function PropTable({
                 <td
                   key={`table[${i}][${j}]`}
                   className={cn(
-                    "px-2 py-1 [&_pre]:!bg-[inherit]",
+                    "px-2 py-1.5 [&_pre]:!bg-[inherit]",
                     i == 2 && "min-w-full",
                   )}
                 >
