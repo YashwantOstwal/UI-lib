@@ -2,7 +2,7 @@ import Container from "../_components/container";
 import { DEFAULT_ACTIVE_FILE, ROOT_DIRECTORY, PROP_TABLE } from "./page.data";
 import PlaceHolder from "@/components/place-holder";
 
-export default function InPageNavbar() {
+export default function InPageNavbarPage() {
   return (
     <>
       <Container>
