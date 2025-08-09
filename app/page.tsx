@@ -80,7 +80,7 @@ export default function Page() {
             href: "/components/parallax-container",
           },
           { name: "Text Switcher", href: "/components/text-switcher" },
-          // { name: "In-page navbar", href: "/components/in-page-navbar" },
+          { name: "In-page navbar", href: "/components/in-page-navbar" },
         ].map((props) => (
           <Card key={props.href} {...props} />
         ))}
