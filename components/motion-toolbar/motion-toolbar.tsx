@@ -16,8 +16,6 @@ import {
   useMotionValue,
   Transition,
   easeInOut,
-  ValueAnimationTransition,
-  TargetAndTransition,
 } from "motion/react";
 
 const ANIMATION_TRANSITION: Transition = {
@@ -49,6 +47,7 @@ export default function MotionToolbar({ items }: MotionToolbarProps) {
         >
           {items?.map(({ icon, tooltip, ...rest }, i) => (
             <motion.button
+              key={tooltip}
               aria-label={tooltip}
               whileHover={{ backgroundColor: "var(--icon-hover-bg)" }}
               {...rest}
@@ -85,77 +84,99 @@ function ToolTipsContainer({
   const [tooltipContainerScope, animate] = useAnimate();
   const x = useMotionValue(0);
 
-  function getTranslateX(mouseIn: number): number {
-    const hoveredTab = toolBarRef.current.querySelector(
-      `[data-tab="${mouseIn}"]`,
-    );
-    const { left: tabLeft, width: tabWidth } =
-      hoveredTab?.getBoundingClientRect() as DOMRect;
-    const finalPosition = tabLeft + tabWidth / 2;
+  const getTranslateX = React.useCallback(
+    (mouseIn: number) => {
+      const hoveredTab = toolBarRef.current.querySelector(
+        `[data-tab="${mouseIn}"]`,
+      );
+      const { left: tabLeft, width: tabWidth } =
+        hoveredTab?.getBoundingClientRect() as DOMRect;
+      const finalPosition = tabLeft + tabWidth / 2;
 
-    const correspondingTooltip = tooltipContainerScope.current.querySelector(
-      `[data-tooltip="${mouseIn}"]`,
-    );
-    const { left: tooltipLeft, width: tooltipWidth } =
-      correspondingTooltip.getBoundingClientRect() as DOMRect;
-    const currentPosition = tooltipLeft + tooltipWidth / 2;
+      const correspondingTooltip = tooltipContainerScope.current.querySelector(
+        `[data-tooltip="${mouseIn}"]`,
+      );
+      const { left: tooltipLeft, width: tooltipWidth } =
+        correspondingTooltip.getBoundingClientRect() as DOMRect;
+      const currentPosition = tooltipLeft + tooltipWidth / 2;
 
-    const relativeTranslateX = finalPosition - currentPosition;
-    const translateX = relativeTranslateX + x.get();
-    return translateX;
-  }
+      const relativeTranslateX = finalPosition - currentPosition;
+      const translateX = relativeTranslateX + x.get();
+      return translateX;
+    },
+    [x, toolBarRef, tooltipContainerScope],
+  );
 
-  function getClipPath(mouseIn: number): string {
-    let left = 0;
-    let right = 0;
-    for (let j = 1; j <= tooltips.length; j++) {
-      const { width } = tooltipContainerScope.current
-        .querySelector(`[data-tooltip="${j}"]`)
-        .getBoundingClientRect();
-      if (j < mouseIn) {
-        left += width;
-      } else if (j > mouseIn) {
-        right += width;
+  const getClipPath = React.useCallback(
+    (mouseIn: number) => {
+      let left = 0;
+      let right = 0;
+      for (let j = 1; j <= tooltips.length; j++) {
+        const { width } = tooltipContainerScope.current
+          .querySelector(`[data-tooltip="${j}"]`)
+          .getBoundingClientRect();
+        if (j < mouseIn) {
+          left += width;
+        } else if (j > mouseIn) {
+          right += width;
+        }
       }
-    }
-    const clipPath = `inset(0px ${right}px 0px ${left}px round 5px)`;
-    return clipPath;
-  }
+      const clipPath = `inset(0px ${right}px 0px ${left}px round 5px)`;
+      return clipPath;
+    },
+    [tooltips.length, tooltipContainerScope],
+  );
 
-  const animateTooltipContainer = async (
-    keyframes: TargetAndTransition,
-    options: ValueAnimationTransition<any> | undefined = ANIMATION_TRANSITION,
-  ) => {
-    await animate(tooltipContainerScope.current, keyframes, options);
-  };
   React.useEffect(() => {
     if (isPresent) {
-      const enterAnimation = async () => {
-        const keyframes = {
-          clipPath: getClipPath(mouseIn),
-          x: getTranslateX(mouseIn),
-        };
-        await animateTooltipContainer(keyframes, { duration: 0 }); //after the mount compute the right position and translate to it and also clip the container to show the right tool tip immediately
-        await animateTooltipContainer({ opacity: 1 }, ANIMATION_TRANSITION); // after all the above happens fadeIn to show the tooltip
+      const keyframes = {
+        clipPath: getClipPath(mouseIn),
+        x: getTranslateX(mouseIn),
       };
-      enterAnimation();
+      if (prevMouseIn === undefined) {
+        const enterAnimation = async () => {
+          await animate(tooltipContainerScope.current, keyframes, {
+            duration: 0,
+          });
+          await animate(
+            tooltipContainerScope.current,
+            { opacity: 1 },
+            ANIMATION_TRANSITION,
+          );
+        };
+        enterAnimation();
+      } else {
+        const intermediateAnimation = () => {
+          animate(
+            tooltipContainerScope.current,
+            keyframes,
+            ANIMATION_TRANSITION,
+          );
+        };
+        intermediateAnimation();
+      }
     } else {
       const exitAnimation = async () => {
-        await animateTooltipContainer({ opacity: 0 }, ANIMATION_TRANSITION); //perform exit animation and call safeToRemove to raises an unmount request from the dom.it has already been removed from the react tree
+        await animate(
+          tooltipContainerScope.current,
+          { opacity: 0 },
+          ANIMATION_TRANSITION,
+        );
         safeToRemove();
       };
       exitAnimation();
     }
-  }, [isPresent]);
+  }, [
+    animate,
+    safeToRemove,
+    isPresent,
+    prevMouseIn,
+    mouseIn,
+    getClipPath,
+    getTranslateX,
+    tooltipContainerScope,
+  ]);
 
-  React.useEffect(() => {
-    if (!prevMouseIn) return;
-    const keyframes = {
-      clipPath: getClipPath(mouseIn),
-      x: getTranslateX(mouseIn),
-    };
-    animate(tooltipContainerScope.current, keyframes, ANIMATION_TRANSITION);
-  }, [prevMouseIn, mouseIn]);
   return (
     <motion.div
       ref={tooltipContainerScope}

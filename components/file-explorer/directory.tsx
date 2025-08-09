@@ -11,7 +11,6 @@ import ArrowDownIcon from "./icons/ArrowDown";
 import DirectoryIcon from "./icons/Directory";
 import File from "./file";
 import sortDirectory from "./utils/sortDirectory";
-import useIsMounted from "@/hooks/user-is-mounted";
 
 export default function Directory({
   items,

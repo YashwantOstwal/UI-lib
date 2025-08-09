@@ -1,10 +1,5 @@
 import type {
-  DirectoryItem,
-  File,
-  Directory,
   EnhancedDirectoryItem,
-  ActiveFile,
-  TailwindCSSClassname,
   FileExplorerProps,
 } from "./file-explorer.types";
 import ProjectDirectory from "./utils/projectDirectory";
@@ -19,6 +14,7 @@ export default function CodePreview({
   rootDirectory,
   defaultActiveFile,
   className,
+  ...rest
 }: FileExplorerProps) {
   const enhancedRootDirectory: EnhancedDirectoryItem[] = new ProjectDirectory(
     rootDirectory,
@@ -30,8 +26,9 @@ export default function CodePreview({
           "relative mt-3.5 flex w-full rounded-2xl bg-[#fcfcfc] text-sm shadow-[0px_8px_12px_-4px_rgba(15,12,12,0.08),_0px_0px_2px_0px_rgba(15,12,12,0.10),_0px_1px_2px_0px_rgba(15,12,12,0.10)] md:p-2",
           className,
         )}
+        {...rest}
       >
-        <div className="min-w-[320px] pr-2.5 text-[#202020] max-md:hidden">
+        <div className="min-w-[300px] pr-2.5 text-[#202020] max-md:hidden">
           <CopiedFilesTrackerProvider>
             <div className="flex items-center justify-between p-2 font-medium">
               Root Dir. <GetStartedButton />

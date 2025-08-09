@@ -1,5 +1,5 @@
 import Container from "../_components/container";
-// import { DEFAULT_ACTIVE_FILE, ROOT_DIRECTORY, PROP_TABLE } from "./page.data";
+import { DEFAULT_ACTIVE_FILE, ROOT_DIRECTORY, PROP_TABLE } from "./page.data";
 import PlaceHolder from "@/components/place-holder";
 
 export default function InPageNavbar() {
@@ -12,11 +12,7 @@ export default function InPageNavbar() {
           {[
             {
               id: "about",
-              className: "h-150",
-            },
-            {
-              id: "features",
-              className: "h-[200vh]",
+              className: "h-160",
             },
             {
               id: "pricing",
@@ -26,10 +22,11 @@ export default function InPageNavbar() {
             <PlaceHolder
               msg1={`id="${id}"`}
               msg2={`className="${className}"`}
-              msg3="I am the default server component"
+              msg3="This is still a server component."
               center={
-                <p className="px-2 py-5 text-center text-sm leading-tight sm:py-7 sm:text-base">
-                  "Watch the navbar for section progress as you scroll."
+                <p className="px-2 py-10 text-center text-sm leading-tight sm:py-16 sm:text-base">
+                  &quot;Watch the navbar for section progress as you
+                  scroll.&quot;
                 </p>
               }
               key={id}
@@ -39,6 +36,12 @@ export default function InPageNavbar() {
             />
           ))}
         </div>
+        <Container.FileExplorer
+          id="file-explorer"
+          defaultActiveFile={DEFAULT_ACTIVE_FILE}
+          rootDirectory={ROOT_DIRECTORY}
+        />
+        <Container.PropTable id="prop-table" {...PROP_TABLE} />
       </Container>
     </>
   );

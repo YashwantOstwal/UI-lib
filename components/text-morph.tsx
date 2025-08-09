@@ -15,7 +15,7 @@ const ANIMATION_VARIANTS = {
 } as const;
 const TextMorph = ({ children, copied }: TextMorphProps) => {
   const id = useId();
-  let freqArray: {
+  const freqArray: {
     [key: string]: number;
   } = {};
 

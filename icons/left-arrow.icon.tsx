@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { TailwindCSSClassname } from "../file-explorer/file-explorer.types";
+import { TailwindCSSClassname } from "../components/file-explorer/file-explorer.types";
 
 export default function LeftArrowIcon(
   props: TailwindCSSClassname & ComponentProps<"svg">,

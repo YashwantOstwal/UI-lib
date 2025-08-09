@@ -1,8 +1,8 @@
 import Link from "next/link";
 import * as motion from "motion/react-client";
-import ComponentIcon from "./icons/component.icon";
-import CodeIcon from "./icons/code.icon";
-import Image, { type ImageProps } from "next/image";
+import ComponentIcon from "@/icons/component.icon";
+import CodeIcon from "@/icons/code.icon";
+import { type ImageProps } from "next/image";
 const lineDrawVariants = {
   initial: { pathLength: 1 },
   whileHover: {
@@ -15,7 +15,7 @@ interface CardProps {
   href: string;
   imgProps?: ImageProps;
 }
-const Card = ({ name, href, imgProps }: CardProps) => (
+const Card = ({ name, href }: CardProps) => (
   <div
     className="rounded-[14px] bg-white p-1"
     style={{
@@ -30,6 +30,7 @@ const Card = ({ name, href, imgProps }: CardProps) => (
       <span className="absolute top-2 left-2 text-[15px] leading-none">
         {name}
       </span>
+      {/* <Image></Image> */}
     </div>
     <Link href={href} prefetch={false}>
       <motion.div

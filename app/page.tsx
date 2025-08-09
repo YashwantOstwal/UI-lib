@@ -70,7 +70,7 @@ export default function Page() {
       <Roblox />
       <div
         id="card-container"
-        className="mx-auto grid max-w-3xl grid-cols-1 gap-x-3 gap-y-2.5 sm:grid-cols-2"
+        className="mx-auto grid max-w-3xl grid-cols-1 gap-x-3 gap-y-2.5 py-10 sm:grid-cols-2"
       >
         {[
           { name: "Motion toolbar", href: "/components/motion-toolbar" },
@@ -80,6 +80,7 @@ export default function Page() {
             href: "/components/parallax-container",
           },
           { name: "Text Switcher", href: "/components/text-switcher" },
+          { name: "In-page navbar", href: "/components/in-page-navbar" },
         ].map((props) => (
           <Card key={props.href} {...props} />
         ))}

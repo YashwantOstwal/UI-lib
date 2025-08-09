@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import InPageNavbar from "@/components/in-page-navbar/in-page-navbar";
+import InPageNavbarDemo from "@/components/in-page-navbar/in-page-navbar.demo";
 
 export const metadata: Metadata = {
   title: "In-Page-Navbar",
   description: "lorem impsum",
 };
 
-export default function RootLayout({
+export default function InPageNavbarPageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <>
       {children}
-      <InPageNavbar />
+      <InPageNavbarDemo />
     </>
   );
 }

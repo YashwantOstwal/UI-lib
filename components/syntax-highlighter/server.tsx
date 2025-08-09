@@ -1,4 +1,3 @@
-import type { BundledLanguage } from "shiki";
 import { codeToHtml } from "shiki";
 
 interface SyntaxHighlighterServerProps {
@@ -10,7 +9,7 @@ export default async function SyntaxHighlighterServer({
   lang = "ts",
 }: SyntaxHighlighterServerProps) {
   const out = await codeToHtml(children, {
-    lang: lang,
+    lang,
     theme: "github-light",
   });
 

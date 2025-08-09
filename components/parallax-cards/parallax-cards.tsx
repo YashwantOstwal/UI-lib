@@ -21,17 +21,17 @@ const ParallaxCards = ({
     const handleResize = ({ matches }: { matches: boolean }) =>
       setSticky(matches);
     let mediaQuery: MediaQueryList;
-    if (ref.current) {
-      const cardHeight =
-        ref.current.getBoundingClientRect().height / childrenCount;
+    const element = ref.current;
+    if (element) {
+      const cardHeight = element.getBoundingClientRect().height / childrenCount;
       mediaQuery = window.matchMedia(`(min-height : ${cardHeight}px)`);
       handleResize(mediaQuery);
       mediaQuery.addEventListener("change", handleResize);
     }
     return () => {
-      ref.current && mediaQuery.removeEventListener("change", handleResize);
+      if (element) mediaQuery.removeEventListener("change", handleResize);
     };
-  }, []);
+  }, [childrenCount]);
   return (
     <>
       <style>

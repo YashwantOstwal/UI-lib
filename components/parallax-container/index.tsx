@@ -71,7 +71,7 @@ export default function ParallaxContainer({
     mediaQuery.addEventListener("change", setMotionScale);
 
     return () => mediaQuery.removeEventListener("change", setMotionScale);
-  }, [maxScale]);
+  }, [scale, maxScale]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import LeftArrow from "./icons/left-arrow";
+import LeftArrow from "@/icons/left-arrow.icon";
 import UnderlineText from "./underline-text";
 export default function BackButton() {
   const router = useRouter();

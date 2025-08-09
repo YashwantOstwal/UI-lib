@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono, Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
-import InPageNavbar from "@/components/InPageNavbar";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -48,7 +47,6 @@ export default function RootLayout({
             {children}
           </main>
         </div>
-        {/* <InPageNavbar /> */}
       </body>
     </html>
   );

@@ -506,13 +506,11 @@ export const PROP_TABLE: PropTableProps = {
       prop: <code>items</code>,
       type: (
         <SyntaxHighlighterServer>
-          {`
-{
+          {`{
   icon: React.ReactNode | string;
   tooltip: string;
   ...rest: React.ComponentProps<"button">;
-}[];
-                `}
+}[];`}
         </SyntaxHighlighterServer>
       ),
       description: (
@@ -534,9 +532,7 @@ export const PROP_TABLE: PropTableProps = {
         </>
       ),
       defaultValue: (
-        <SyntaxHighlighterServer>
-          MOCK_PROPS_MOTION_TOOLBAR
-        </SyntaxHighlighterServer>
+        <SyntaxHighlighterServer>(required)</SyntaxHighlighterServer>
       ),
     },
   ],

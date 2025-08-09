@@ -1,3 +1,5 @@
+import { MotionValue } from "motion";
+
 interface ParallaxCardsProps {
   maxStackedCards?: number;
   children: React.ReactNode[];
@@ -5,7 +7,7 @@ interface ParallaxCardsProps {
 }
 interface CardProps {
   index: number;
-  scrollYProgress: any;
+  scrollYProgress: MotionValue<number>;
   maxStackedCards: number;
   totalCards: number;
   children: React.ReactNode | string;

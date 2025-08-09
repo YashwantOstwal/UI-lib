@@ -3,6 +3,7 @@ import {
   type DirectoryItem,
 } from "@/components/file-explorer/file-explorer.types";
 import type { PropTableProps } from "@/components/prop-table/prop-table.types";
+import SyntaxHighlighterServer from "@/components/syntax-highlighter/server";
 
 const PARALLAX_CARDS_DEMO_TSX = `import ParallaxCards from "./parallax-cards";
 import { MOCK_PROPS_PARALLAX_CARDS } from "./parallax-cards.data";
@@ -279,23 +280,31 @@ export const PROP_TABLE: PropTableProps = {
   data: [
     {
       prop: <code>maxStackedCards?</code>,
-      type: "number",
+      type: <SyntaxHighlighterServer>number</SyntaxHighlighterServer>,
       description:
         "The number of cards that remain visibly stacked on top of each other before the bottom-most card begins to fade and scroll out of view.",
-      defaultValue: "3",
+      defaultValue: <SyntaxHighlighterServer>3</SyntaxHighlighterServer>,
     },
     {
       prop: <code>top?</code>,
-      type: "string",
+      type: <SyntaxHighlighterServer>string</SyntaxHighlighterServer>,
       description: `The CSS top offset for the sticky cards. This determines how far from the top of the window each card "sticks" as you scroll.`,
-      defaultValue: "50px",
+      defaultValue: (
+        <SyntaxHighlighterServer>&quot;50px&quot;</SyntaxHighlighterServer>
+      ),
     },
     {
       prop: <code>children</code>,
-      type: "React.ReactNode",
-      description:
-        "An array of React components or elements to be rendered as individual cards in the parallax sequence.",
-      defaultValue: "50px",
+      type: <SyntaxHighlighterServer>React.ReactNode</SyntaxHighlighterServer>,
+      description: (
+        <div>
+          An array of React components or elements to be rendered as individual
+          cards in the parallax sequence.
+        </div>
+      ),
+      defaultValue: (
+        <SyntaxHighlighterServer>(required)</SyntaxHighlighterServer>
+      ),
     },
   ],
 };

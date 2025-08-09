@@ -4,38 +4,8 @@ import { PropTableProps } from "./prop-table.types";
 
 const COLUMN_HEADERS = ["Props", "Type", "Description", "Default value"];
 
-const EXAMPLE_TABLE_DATA = [
-  {
-    prop: "src",
-    required: "true",
-    type: "string",
-    description: "Source URL for the MacBook screen image.",
-    defaultValue: "undefined",
-  },
-  {
-    prop: "showGradient",
-    required: "false",
-    type: "boolean",
-    description: "Flag to show/hide the gradient overlay.",
-    defaultValue: "undefined",
-  },
-  {
-    prop: "title",
-    required: "false",
-    type: "string | ReactNode",
-    description: "Title text or React node displayed above the MacBook.",
-    defaultValue: "undefined",
-  },
-  {
-    prop: "badge",
-    required: "false",
-    type: "ReactNode",
-    description: "Sticker displayed at the bottom left of the Macbook",
-    defaultValue: "undefined",
-  },
-];
 export default function PropTable({
-  data = EXAMPLE_TABLE_DATA,
+  data,
   className,
   ...rest
 }: PropTableProps) {
@@ -43,7 +13,7 @@ export default function PropTable({
     <div className="overflow-x-auto">
       <table
         className={cn(
-          "w-full min-w-150 border border-dashed border-[#c6c6c6] bg-[#EFEFF2] text-left text-[15px] leading-[1.4286]",
+          "w-full min-w-2xl border border-dashed border-[#c6c6c6] bg-[#EFEFF2] text-left text-[15px] leading-[1.4286]",
           className,
         )}
         {...rest}
@@ -71,7 +41,7 @@ export default function PropTable({
                   key={`table[${i}][${j}]`}
                   className={cn(
                     "px-2 py-1 [&_pre]:!bg-[inherit]",
-                    i == 2 && "min-w-xs",
+                    i == 2 && "min-w-full",
                   )}
                 >
                   {eachItem}

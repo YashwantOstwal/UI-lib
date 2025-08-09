@@ -7,7 +7,9 @@ export default function MotionToolbarPage() {
     <Container>
       <Container.Title>Motion toolbar</Container.Title>
       <Container.Description>Animated Toolbar</Container.Description>
-      <Container.Preview>{/* <TextSwitcherDemo /> */}</Container.Preview>
+      <Container.Preview>
+        <TextSwitcherDemo />
+      </Container.Preview>
       <Container.FileExplorer
         defaultActiveFile={DEFAULT_ACTIVE_FILE}
         rootDirectory={ROOT_DIRECTORY}

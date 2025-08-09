@@ -14,9 +14,6 @@ import {
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-import Image1 from "@/public/ImageContainer/image-1.png";
-import Image2 from "@/public/ImageContainer/image-2.png";
-import Image3 from "@/public/ImageContainer/image-3.png";
 import Ilia from "@/public/ilia.png";
 import Islam from "@/public/islam.png";
 import Merab from "@/public/merab.png";
@@ -46,17 +43,17 @@ export default function SoonToBeDeleted() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef);
 
-  const variants = {
-    initial: {
-      y: prevState !== undefined && state < prevState ? "-100%" : "100%",
-    },
-    animate: {
-      y: "0%",
-    },
-    exit: (custom: boolean) => ({
-      y: !custom ? "-100%" : "100%",
-    }),
-  };
+  // const variants = {
+  //   initial: {
+  //     y: prevState !== undefined && state < prevState ? "-100%" : "100%",
+  //   },
+  //   animate: {
+  //     y: "0%",
+  //   },
+  //   exit: (custom: boolean) => ({
+  //     y: !custom ? "-100%" : "100%",
+  //   }),
+  // };
   return (
     <div
       ref={containerRef}
@@ -133,7 +130,7 @@ function ImageContainer({ state }: { state: number }) {
       };
       exitAnimation();
     }
-  }, [isPresent]);
+  }, [safeToRemove, val, isPresent]);
 
   return (
     <motion.div
@@ -152,7 +149,8 @@ function ImageContainer({ state }: { state: number }) {
       }}
     >
       <Image
-        {...data[state].imgProps}
+        src={data[state].imgProps.src}
+        alt={data[state].imgProps.alt}
         priority
         className="size-full object-contain object-top"
       />
@@ -250,8 +248,11 @@ function Toggler({ state, prevState, isInView, setState }: TogglerProps) {
         <div className="overflowing-content overflow-x-auto">
           <div className="w-fit space-y-1 px-2 py-1">
             <div className="flex gap-1">
-              {data.map(({ imgProps }, i) => (
-                <div className="flex w-25 shrink-0 flex-col gap-0.5 text-sm font-medium">
+              {data.map(({ imgProps: { src, alt } }, i) => (
+                <div
+                  key={alt}
+                  className="flex w-25 shrink-0 flex-col gap-0.5 text-sm font-medium"
+                >
                   <span
                     className={cn(
                       "after:content-['.']",
@@ -273,7 +274,8 @@ function Toggler({ state, prevState, isInView, setState }: TogglerProps) {
                       }}
                     >
                       <Image
-                        {...imgProps}
+                        src={src}
+                        alt={alt}
                         className="size-full object-contain"
                       />
                     </motion.div>

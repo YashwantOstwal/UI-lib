@@ -79,7 +79,7 @@ export default function ParallaxContainer({
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [maxScale]);
+  }, [scale, maxScale]);
 
   return (
     <>
