@@ -4,7 +4,7 @@ import * as React from "react";
 import useIsServer from "@/hooks/use-is-server";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import BurgerIcon from "@/icons/burger.icon";
 import CloseIcon from "@/icons/close.icon";
 
@@ -31,7 +31,7 @@ export default function InPageNavbar({ logo, sections }: InPageNavbarProps) {
     <NavButtonGroup
       className="gap-2.5 max-sm:mx-auto max-sm:grid max-sm:max-w-fit max-sm:grid-rows-3 max-sm:py-8 max-sm:text-base sm:flex sm:items-center sm:gap-2"
       sections={sections}
-      isServer={isServer}
+      // isServer={isServer}
     />
   );
   React.useEffect(() => {
@@ -114,17 +114,17 @@ export default function InPageNavbar({ logo, sections }: InPageNavbarProps) {
 
 function NavButtonGroup({
   sections,
-  isServer,
+  // isServer,
   className,
 }: NavButtonGroupProps) {
-  const { scrollY } = useScroll();
+  // const { scrollY } = useScroll();
   return (
     <ol className={className}>
       {sections.map((props) => (
         <NavItem
           key={props.id}
-          scrollY={scrollY}
-          isServer={isServer}
+          // scrollY={scrollY}
+          // isServer={isServer}
           {...props}
         />
       ))}
@@ -132,43 +132,42 @@ function NavButtonGroup({
   );
 }
 
-const NavItem = ({ scrollY, isServer, label, id }: NavItemProps) => {
-  const targetElement = React.useMemo(() => {
-    if (isServer) {
-      return null;
-    }
-    const element = document.getElementById(id);
-    if (!element) {
-      throw new Error(
-        `No section found with id="${id}". Make sure the element is mounted.`,
-      );
-    } else {
-      return element;
-    }
-  }, [id, isServer]);
+const NavItem = ({ label, id }: NavItemProps) => {
+  // const targetElement = React.useMemo(() => {
+  //   if (isServer) {
+  //     return null;
+  //   }
+  //   const element = document.getElementById(id);
+  //   if (!element) {
+  //     throw new Error(
+  //       `No section found with id="${id}". Make sure the element is mounted.`,
+  //     );
+  //   } else {
+  //     return element;
+  //   }
+  // }, [id, isServer]);
+  // const sectionProgress = useTransform(scrollY, (latest) => {
+  //   if (isServer || targetElement === null) return 0;
+  //   const viewportHeight = window.innerHeight;
+  //   const targetElementTop = targetElement.offsetTop;
+  //   const targetElementHeight = targetElement.offsetHeight;
+  //   const visibleRatio =
+  //     (latest + viewportHeight - targetElementTop) / targetElementHeight;
+  //   return Math.min(1, Math.max(visibleRatio, 0));
+  // });
 
-  const sectionProgress = useTransform(scrollY, (latest) => {
-    if (isServer || targetElement === null) return 0;
-    const viewportHeight = window.innerHeight;
-    const targetElementTop = targetElement.offsetTop;
-    const targetElementHeight = targetElement.offsetHeight;
-    const visibleRatio =
-      (latest + viewportHeight - targetElementTop) / targetElementHeight;
-    return Math.min(1, Math.max(visibleRatio, 0));
-  });
-
-  const clipPath = useTransform(
-    sectionProgress,
-    [0, 1],
-    ["inset(0% 100% 0% 0%)", "inset(0% 0% 0% 0%)"],
-  );
+  // const clipPath = useTransform(
+  //   sectionProgress,
+  //   [0, 1],
+  //   ["inset(0% 100% 0% 0%)", "inset(0% 0% 0% 0%)"],
+  // );
 
   return (
     <Link
       href={"#" + id}
       scroll={false}
       onClick={() => {
-        targetElement?.scrollIntoView({ behavior: "smooth" });
+        // targetElement?.scrollIntoView({ behavior: "smooth" });
       }}
       className="relative overflow-hidden rounded-full bg-(--nav-btn-bg) font-medium text-(--nav-btn-text) capitalize transition-opacity duration-150 ease-in-out hover:opacity-75 sm:rounded-full sm:text-[13px] lg:border lg:border-[#ababab60]"
     >
@@ -177,7 +176,7 @@ const NavItem = ({ scrollY, isServer, label, id }: NavItemProps) => {
       </div>
       <motion.div
         className="absolute -inset-0.5 z-30 grid place-items-center rounded-[inherit] bg-(--nav-progress-bg) leading-none text-(--nav-progress-text)"
-        style={{ clipPath }}
+        // style={{ clipPath }}
       >
         {label}
       </motion.div>
