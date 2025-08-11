@@ -6,8 +6,10 @@ interface RowData {
   description?: React.ReactNode;
   defaultValue: React.ReactNode;
 }
-type PropTableProps = TailwindCSSClassname &
+type PropTableProps = React.PropsWithChildren &
+  TailwindCSSClassname &
   React.ComponentProps<"table"> & {
     data: RowData[];
   };
+
 export type { RowData, PropTableProps };

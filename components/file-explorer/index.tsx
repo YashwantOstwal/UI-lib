@@ -28,7 +28,7 @@ export default function CodePreview({
         )}
         {...rest}
       >
-        <div className="min-w-[300px] pr-2.5 text-[#202020] max-md:hidden">
+        <div className="min-w-[320px] pr-2.5 text-[#202020] max-md:hidden">
           <CopiedFilesTrackerProvider>
             <div className="flex items-center justify-between p-2 font-medium">
               Root Dir. <GetStartedButton />

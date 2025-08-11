@@ -7,13 +7,13 @@ interface NavSection {
 
 interface NavButtonGroupProps {
   sections: NavSection[];
-  isServer?: boolean;
+  isServer: boolean;
   className?: string;
 }
 
 interface NavItemProps extends NavSection {
-  scrollY?: MotionValue<number>;
-  isServer?: boolean;
+  scrollY: MotionValue<number>;
+  isServer: boolean;
 }
 
 interface InPageNavbarProps {

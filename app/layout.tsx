@@ -42,7 +42,7 @@ export default function RootLayout({
           "bg-[#ededed] antialiased",
         )}
       >
-        <div className="font-poppins mx-auto max-w-7xl px-3 lg:px-4">
+        <div className="font-poppins mx-auto max-w-screen-2xl px-3 lg:px-4">
           <main className="min-h-screen border-x border-dashed border-[#c6c6c6] bg-[#f5f5f5] px-3 lg:px-4">
             {children}
           </main>

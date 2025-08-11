@@ -1,6 +1,7 @@
 import MotionToolbar from "@/components/motion-toolbar";
 import Container from "../_components/container";
 import { DEFAULT_ACTIVE_FILE, ROOT_DIRECTORY, PROP_TABLE } from "./page.data";
+import ListContainer from "@/components/list-container";
 
 export default function MotionToolbarPage() {
   return (
@@ -14,7 +15,18 @@ export default function MotionToolbarPage() {
         defaultActiveFile={DEFAULT_ACTIVE_FILE}
         rootDirectory={ROOT_DIRECTORY}
       />
-      <Container.PropTable {...PROP_TABLE} />
+      <Container.PropTable {...PROP_TABLE}>
+        <ListContainer
+          title="Pro tips:"
+          variant="pro-tips"
+          list={["lorem30", "lorem30", "lorem30"]}
+        />
+        <ListContainer
+          title="Caveats:"
+          variant="caveats"
+          list={["lorem30", "lorem30", "lorem30"]}
+        />
+      </Container.PropTable>
     </Container>
   );
 }
