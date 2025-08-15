@@ -9,10 +9,9 @@ import {
   classNameProp,
 } from "@/components/prop-table/commonly-used-props";
 
-const INDEX_TSX = `
-"use client";
-import { cn } from "@/lib/utils";
+const INDEX_TSX = `"use client";
 import * as React from "react";
+import { cn } from "@/lib/utils";
 import {
   AnimatePresence,
   motion,
@@ -20,7 +19,7 @@ import {
   useTransform,
   useVelocity,
 } from "motion/react";
-import { TextSwitcherProps } from "./text-switcher.types";
+import type { TextSwitcherProps } from "./text-switcher.types";
 
 export default function TextSwitcher({
   words,
@@ -90,7 +89,7 @@ export default function TextSwitcher({
         >
           {words[currentIndex].split("").map((letter, index) => (
             <motion.div
-              key={index}
+              key={\`\${currentIndex}-\${index}\`}
               className="origin-left"
               variants={letterVariants}
               transition={{
@@ -157,28 +156,24 @@ export default function TextSwitcherDemo() {
   );
 }
 `;
-const TEXT_SWITCHER_TYPES_TS = `interface ParallaxCardsProps {
-  maxStackedCards?: number;
-  children: React.ReactNode[];
-  top?: string;
+const TEXT_SWITCHER_TYPES_TS = `interface TextSwitcherProps {
+  words: Array<string>;
+  readTimeInSec?: number;
+  animationDurationInSec?: number;
+  className?: string;
+  dotRestColor: string;
+  dotMotionColor: string;
+  style?: React.CSSProperties;
 }
-interface CardProps {
-  index: number;
-  scrollYProgress: any;
-  maxStackedCards: number;
-  totalCards: number;
-  children: React.ReactNode | string;
-  top: string;
-  sticky: boolean;
-}
-export type { ParallaxCardsProps, CardProps };
+
+export type { TextSwitcherProps };
 `;
 const UTILS_TS = `import { twMerge } from "tailwind-merge";
 import clsx, { ClassValue } from "clsx";
 
 export const cn = (...args: ClassValue[]) => twMerge(clsx(args));
 `;
-export const ROOT_DIRECTORY: DirectoryItem[] = [
+const ROOT_DIRECTORY: DirectoryItem[] = [
   {
     name: "components",
     type: "directory",
@@ -218,26 +213,30 @@ export const ROOT_DIRECTORY: DirectoryItem[] = [
     ],
   },
 ];
-export const DEFAULT_ACTIVE_FILE: ActiveFile = {
+const DEFAULT_ACTIVE_FILE: ActiveFile = {
   absolutePath: "components/text-switcher/text-switcher.demo.tsx",
-  code: INDEX_TSX,
+  code: TEXT_SWITCHER_DEMO_TSX,
 };
 
-export const PROP_TABLE: PropTableProps = {
+const PROP_TABLE: PropTableProps = {
   data: [
     {
       prop: <code>words</code>,
       type: (
         <SyntaxHighlighterServer>{`Array<string>`}</SyntaxHighlighterServer>
       ),
-      description: "	An array of strings that the component will cycle through.",
-      defaultValue: "(required)",
+      description: "An array of strings that the component will cycle through.",
+      defaultValue: (
+        <SyntaxHighlighterServer>(required)</SyntaxHighlighterServer>
+      ),
     },
     {
       prop: <code>dotRestColor</code>,
       type: <SyntaxHighlighterServer>string</SyntaxHighlighterServer>,
       description: "The CSS color of the animated dot when it is at rest.",
-      defaultValue: "(required)",
+      defaultValue: (
+        <SyntaxHighlighterServer>(required)</SyntaxHighlighterServer>
+      ),
     },
     {
       prop: <code>dotMotionColor</code>,
@@ -265,3 +264,5 @@ export const PROP_TABLE: PropTableProps = {
     classNameProp,
   ],
 };
+
+export { ROOT_DIRECTORY, DEFAULT_ACTIVE_FILE, PROP_TABLE };

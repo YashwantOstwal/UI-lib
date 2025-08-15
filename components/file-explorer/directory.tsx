@@ -35,11 +35,11 @@ export default function Directory({
     <div className="w-full space-y-0.5">
       <button
         className={cn(
-          "flex w-full items-center justify-between gap-1 rounded-md py-1 hover:bg-[#e4e4e4]/50",
+          "flex w-full items-center justify-between gap-1 rounded-md py-1 outline-none hover:bg-[#e4e4e4]/50 focus:bg-[#e4e4e4]/50 focus-visible:bg-[#e4e4e4]/50",
           isCopyTrackerOn &&
             (filesNotCopiedCount === 0
-              ? "bg-green-200/25 hover:bg-green-200/50"
-              : "bg-red-200/25 hover:bg-red-200/50"),
+              ? "bg-green-200/25 hover:bg-green-200/50 focus:bg-green-200/50 focus-visible:bg-green-200/50"
+              : "bg-red-200/25 hover:bg-red-200/50 focus:bg-red-200/50 focus-visible:bg-red-200/50"),
         )}
         style={{ paddingLeft: `calc(${level} * var(--indent))` }}
         onClick={handleSubTree}
@@ -59,7 +59,14 @@ export default function Directory({
                 });
               }}
               type="checkbox"
-              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                const newStatus = !e.currentTarget.checked;
+                dispatchCopiedFiles?.({
+                  type: newStatus ? "ADD" : "REMOVE",
+                  items: descendentFiles,
+                });
+              }}
               checked={filesNotCopiedCount === 0}
             />
           )}

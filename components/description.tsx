@@ -8,7 +8,13 @@ export default function Description({
   ...rest
 }: DescriptionProps) {
   return (
-    <p className={cn("text-gray-700", className)} {...rest}>
+    <p
+      className={cn(
+        "text-base text-gray-700 2xl:text-lg 2xl:leading-snug",
+        className,
+      )}
+      {...rest}
+    >
       {children}
     </p>
   );

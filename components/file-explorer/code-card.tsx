@@ -19,7 +19,7 @@ export default function CodeCard({
   } = useActiveFile();
   return (
     <>
-      <div className="relative z-10 flex-1 overflow-hidden rounded-xl bg-[#F0EFF2] p-1 md:shadow-[0px_8px_12px_-4px_rgba(15,12,12,0.08),_0px_0px_2px_0px_rgba(15,12,12,0.10),_0px_1px_2px_0px_rgba(15,12,12,0.10)]">
+      <div className="relative z-10 w-full flex-1 overflow-hidden rounded-xl bg-[#ededed] p-1 md:shadow-[0px_8px_12px_-4px_rgba(15,12,12,0.08),_0px_0px_2px_0px_rgba(15,12,12,0.10),_0px_1px_2px_0px_rgba(15,12,12,0.10)]">
         <div className="flex items-center justify-between gap-2 px-1 py-1.5 font-medium">
           <button
             onClick={() => setOpen((prev) => !prev)}
@@ -31,7 +31,7 @@ export default function CodeCard({
         </div>
         <div
           id="code-container"
-          className="relative flex h-[580px] overflow-clip rounded-[8px] border-dashed border-[#c6c6c6] bg-white shadow-[0px_8px_12px_-4px_rgba(16,12,12,0.08),0px_0px_2px_0px_rgba(16,12,12,0.10),0px_1px_2px_0px_rgba(16,12,12,0.10)] [&_pre]:min-h-full [&_pre]:w-full [&_pre]:overflow-auto [&_pre]:rounded-[6px] [&_pre]:p-3 [&_pre]:md:p-4"
+          className="relative flex h-[450px] overflow-clip rounded-[8px] border-dashed border-[#c6c6c6] bg-white shadow-[0px_8px_12px_-4px_rgba(16,12,12,0.08),0px_0px_2px_0px_rgba(16,12,12,0.10),0px_1px_2px_0px_rgba(16,12,12,0.10)] md:h-[600px] [&_pre]:min-h-full [&_pre]:w-full [&_pre]:overflow-auto [&_pre]:rounded-[6px] [&_pre]:p-3 [&_pre]:md:p-4"
         >
           <SyntaxHighlighterClient loader={<pre>{code}</pre>}>
             {code}

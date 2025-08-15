@@ -1,14 +1,22 @@
+import ListContainer from "@/components/list-container";
 import Container from "../_components/container";
-import { DEFAULT_ACTIVE_FILE, ROOT_DIRECTORY, PROP_TABLE } from "./page.data";
+import {
+  TITLE,
+  DESCRIPTION,
+  DEFAULT_ACTIVE_FILE,
+  ROOT_DIRECTORY,
+  PROP_TABLE,
+  ADDITIONAL_INFORMATION,
+} from "./page.data";
 import PlaceHolder from "@/components/place-holder";
 
 export default function InPageNavbarPage() {
   return (
     <>
       <Container>
-        <Container.Title>In-Page navbar</Container.Title>
-        <Container.Description>In-Page navbar</Container.Description>
-        <div className="-mx-3 space-y-1 py-10">
+        <Container.Title>{TITLE}</Container.Title>
+        <Container.Description>{DESCRIPTION}</Container.Description>
+        <div className="-mx-2 space-y-1 py-10 lg:-mx-3">
           {[
             {
               id: "about",
@@ -20,9 +28,8 @@ export default function InPageNavbarPage() {
             },
           ].map(({ id, className }, i) => (
             <PlaceHolder
-              msg1={`id="${id}"`}
-              msg2={`className="${className}"`}
-              msg3="This is still a server component."
+              msg1={`id="${id}" className="${className}"`}
+              msg2="This is still a server component."
               center={
                 <p className="px-2 py-10 text-center text-sm leading-tight sm:py-16 sm:text-base">
                   &quot;Watch the navbar for section progress as you
@@ -41,7 +48,11 @@ export default function InPageNavbarPage() {
           defaultActiveFile={DEFAULT_ACTIVE_FILE}
           rootDirectory={ROOT_DIRECTORY}
         />
-        <Container.PropTable id="prop-table" {...PROP_TABLE} />
+        <Container.PropTable id="prop-table" {...PROP_TABLE}>
+          {ADDITIONAL_INFORMATION.map((props, i) => (
+            <ListContainer {...props} key={`list-container-${i + 1}`} />
+          ))}
+        </Container.PropTable>
       </Container>
     </>
   );

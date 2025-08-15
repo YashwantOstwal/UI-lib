@@ -5,7 +5,6 @@ export default function PlaceHolder({
   className,
   msg1,
   msg2,
-  msg3,
   style,
   center = (
     <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -33,7 +32,6 @@ export default function PlaceHolder({
   className?: string;
   msg1?: React.ReactNode | string;
   msg2?: React.ReactNode | string;
-  msg3?: React.ReactNode | string;
   style?: CSSProperties;
   index?: number;
   center?: React.ReactNode | string;
@@ -47,17 +45,14 @@ export default function PlaceHolder({
       style={{ backgroundColor: shadesOfWhite[index], ...style }}
     >
       <div className="relative size-full border border-dashed p-4 sm:p-5">
-        <span className="absolute top-0.75 left-0.75 text-[9px] leading-none sm:text-[11px]">
+        <span className="absolute top-1 left-1 text-[11px] leading-none sm:text-xs">
           {msg1}
         </span>
         <div className="size-full p-3.5 sm:p-5">
           <div className="relative z-20 size-full border p-4 sm:px-6 sm:py-5">
-            <span className="absolute top-0.75 left-0.75 text-[9px] leading-none sm:text-[11px]">
-              {msg2}
-            </span>
             <div className="relative grid size-full place-items-center overflow-hidden border border-dashed">
-              <span className="absolute top-0.75 left-0.75 text-[9px] leading-none sm:text-[11px]">
-                {msg3}
+              <span className="absolute top-1 left-1 text-[11px] leading-none sm:text-xs">
+                {msg2}
               </span>
               {center}
             </div>

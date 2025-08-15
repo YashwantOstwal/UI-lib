@@ -1,9 +1,7 @@
-import { useRef } from "react";
+import * as React from "react";
 
 const useIsServer = () => {
-  const isServer = useRef(
-    typeof window === "undefined" || typeof document === "undefined",
-  );
+  const isServer = React.useRef(typeof window === "undefined");
   return isServer.current;
 };
 export default useIsServer;

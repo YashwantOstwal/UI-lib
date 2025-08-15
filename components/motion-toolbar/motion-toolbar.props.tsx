@@ -1,6 +1,6 @@
 import type { MotionToolbarProps } from "./motion-toolbar.types";
 
-export const MOCK_PROPS_MOTION_TOOLBAR: MotionToolbarProps = {
+export const DEMO_PROPS: MotionToolbarProps = {
   items: [
     {
       icon: (

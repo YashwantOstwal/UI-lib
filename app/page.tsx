@@ -7,7 +7,7 @@ export default function Page() {
       <div className="pt-36 pb-24">
         <div className="flex flex-col items-center">
           <div className="font-geist-mono flex items-center leading-5 tracking-normal text-gray-700">
-            New component every 48 hours&nbsp;
+            New component every 72 hours&nbsp;
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: [null, 1, 1, 0] }}
@@ -29,11 +29,15 @@ export default function Page() {
           </h1>
           <p className="mt-7 max-w-[550px] text-center text-lg text-pretty text-gray-700">
             Smooth, animated components inspired by the best, crafted to elevate
-            your React UI. <a>Lastly added 3 hours ago</a>
+            your React UI.&nbsp;
           </p>
         </div>
         <div className="mx-auto mt-12 grid max-w-3xl grid-cols-1 gap-x-3 gap-y-2.5 sm:grid-cols-2">
           {[
+            {
+              name: "Spinning Carousel",
+              href: "/components/spinning-carousel",
+            },
             { name: "Motion toolbar", href: "/components/motion-toolbar" },
             { name: "Parallax cards", href: "/components/parallax-cards" },
             {
@@ -41,7 +45,7 @@ export default function Page() {
               href: "/components/parallax-container",
             },
             { name: "Text Switcher", href: "/components/text-switcher" },
-            { name: "In Page Navbar", href: "/components/in-page-navbar" },
+            { name: "In-Page Navbar", href: "/components/in-page-navbar" },
           ].map((props) => (
             <Card key={props.href} {...props} />
           ))}

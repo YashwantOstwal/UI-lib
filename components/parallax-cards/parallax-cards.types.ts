@@ -4,6 +4,7 @@ interface ParallaxCardsProps {
   maxStackedCards?: number;
   children: React.ReactNode[];
   top?: string;
+  forceParallax?: boolean;
 }
 interface CardProps {
   index: number;
@@ -13,5 +14,6 @@ interface CardProps {
   children: React.ReactNode | string;
   top: string;
   sticky: boolean;
+  forceParallax: boolean;
 }
 export type { ParallaxCardsProps, CardProps };

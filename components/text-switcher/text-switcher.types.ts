@@ -1,5 +1,3 @@
-import { CSSProperties } from "react";
-
 interface TextSwitcherProps {
   words: Array<string>;
   readTimeInSec?: number;
@@ -7,7 +5,7 @@ interface TextSwitcherProps {
   className?: string;
   dotRestColor: string;
   dotMotionColor: string;
-  style?: CSSProperties;
+  style?: React.CSSProperties;
 }
 
 export type { TextSwitcherProps };

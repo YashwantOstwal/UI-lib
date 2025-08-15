@@ -10,7 +10,7 @@ import CodeCard from "./code-card";
 import GetStartedButton from "./get-started-button";
 import { cn } from "@/lib/utils";
 
-export default function CodePreview({
+export default function FileExplorer({
   rootDirectory,
   defaultActiveFile,
   className,
@@ -28,7 +28,7 @@ export default function CodePreview({
         )}
         {...rest}
       >
-        <div className="min-w-[320px] pr-2.5 text-[#202020] max-md:hidden">
+        <div className="min-w-80 pr-2.5 text-[#202020] max-md:hidden">
           <CopiedFilesTrackerProvider>
             <div className="flex items-center justify-between p-2 font-medium">
               Root Dir. <GetStartedButton />

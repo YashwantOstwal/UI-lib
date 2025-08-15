@@ -39,7 +39,7 @@ export default function RootLayout({
           inter.variable,
           geistMono.variable,
           poppins.variable,
-          "bg-[#ededed] antialiased",
+          "[&_*]:focus-visible: bg-[#ededed] antialiased selection:bg-[#dddddd] [&_*]:focus:outline-2 [&_*]:focus:outline-[#A9ADB4]",
         )}
       >
         <div className="font-poppins mx-auto max-w-screen-2xl px-3 lg:px-4">

@@ -1,5 +1,3 @@
-"use client";
-
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -8,7 +6,7 @@ export default function useToggleState<T extends HTMLElement>(
     from: number;
     to: number;
   },
-  duration: number
+  duration: number,
 ) {
   const ref = useRef<T>(null);
   const isInView = useInView(ref);

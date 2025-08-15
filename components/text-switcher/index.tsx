@@ -1,6 +1,6 @@
 "use client";
-import { cn } from "@/lib/utils";
 import * as React from "react";
+import { cn } from "@/lib/utils";
 import {
   AnimatePresence,
   motion,
@@ -8,7 +8,7 @@ import {
   useTransform,
   useVelocity,
 } from "motion/react";
-import { TextSwitcherProps } from "./text-switcher.types";
+import type { TextSwitcherProps } from "./text-switcher.types";
 
 export default function TextSwitcher({
   words,
@@ -78,7 +78,7 @@ export default function TextSwitcher({
         >
           {words[currentIndex].split("").map((letter, index) => (
             <motion.div
-              key={index}
+              key={`${currentIndex}-${index}`}
               className="origin-left"
               variants={letterVariants}
               transition={{

@@ -11,6 +11,7 @@ export default async function SyntaxHighlighterServer({
   const out = await codeToHtml(children, {
     lang,
     theme: "github-light",
+    tabindex: "-1",
   });
 
   return <div dangerouslySetInnerHTML={{ __html: out }} />;

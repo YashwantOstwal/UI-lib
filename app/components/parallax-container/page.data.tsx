@@ -8,13 +8,43 @@ import {
   classNameProp,
   styleProp,
 } from "@/components/prop-table/commonly-used-props";
+import type { ListContainerProps } from "@/components/list-container";
 
+const TITLE = "Parallax Container";
+const DESCRIPTION =
+  "A reusable, fully responsive component that applies a smooth parallax effect to the provided child component. This popular design technique adds depth, creates an immersive experience, and makes your website feel more engaging.";
+const ADDITIONAL_INFORMATION: ListContainerProps[] = [
+  {
+    title: "Good to know:",
+    variant: "pro-tips",
+    list: [
+      <>
+        The parallax effect is designed to work only when the Parallax Container
+        fits entirely within the viewport. If the container&apos;s height ever
+        exceeds the viewport&apos;s height, the component will
+        automatically&nbsp;
+        <span className="font-semibold">opt out</span>&nbsp;of the effect.
+      </>,
+      <>
+        To ensure the animation works as intended, make sure your component
+        within the container is never taller than the viewport.
+      </>,
+    ],
+  },
+];
 const INDEX_TSX = `"use client";
 
 import * as React from "react";
-import { useScroll, useTransform, motion, useMotionValue } from "motion/react";
+import {
+  useScroll,
+  useTransform,
+  motion,
+  useMotionValue,
+  useSpring,
+} from "motion/react";
 import useIsServer from "@/hooks/use-is-server";
 import type { ParallaxContainerProps } from "./parallax-container.types";
+
 export default function ParallaxContainer({
   children,
   maxScale = 1.1,
@@ -24,6 +54,11 @@ export default function ParallaxContainer({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const isServer = useIsServer();
   const scale = useMotionValue(1);
+  const springifyScale = useSpring(scale, {
+    mass: 1,
+    damping: 46,
+    stiffness: 350,
+  });
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -35,6 +70,7 @@ export default function ParallaxContainer({
     const viewportHeight = window.innerHeight;
     const { height: containerHeight } =
       containerRef.current.getBoundingClientRect();
+
     return latest * (viewportHeight + containerHeight);
   });
 
@@ -61,28 +97,24 @@ export default function ParallaxContainer({
 
   React.useEffect(() => {
     if (!containerRef.current) return;
-    const setMotionScale = ({ matches }: { matches: boolean }) => {
+
+    const setScale = () => {
+      const viewportHeight = window.innerHeight;
       const { height: containerHeight } =
         containerRef.current!.getBoundingClientRect();
-      if (matches) {
-        const effectiveMaxScale = Math.min(
-          maxScale,
-          window.innerHeight / containerHeight,
-        );
-        scale.set(effectiveMaxScale);
-      } else {
-        scale.set(1);
-      }
+      const effectiveMaxScale = Math.min(
+        maxScale,
+        viewportHeight / containerHeight,
+      );
+
+      scale.set(containerHeight >= viewportHeight ? 1 : effectiveMaxScale);
     };
-    const { height: containerHeight } =
-      containerRef.current!.getBoundingClientRect();
-    const mediaQuery = window.matchMedia(\`(min-height : \${containerHeight}px)\`);
 
-    setMotionScale(mediaQuery);
-    mediaQuery.addEventListener("change", setMotionScale);
+    setScale();
+    window.addEventListener("resize", setScale);
 
-    return () => mediaQuery.removeEventListener("change", setMotionScale);
-  }, [maxScale]);
+    return () => window.removeEventListener("resize", setScale);
+  }, [scale, maxScale]);
 
   return (
     <>
@@ -95,7 +127,7 @@ export default function ParallaxContainer({
         <motion.div
           style={{
             y,
-            scale,
+            scale: springifyScale,
             transformOrigin: "bottom",
           }}
         >
@@ -107,18 +139,21 @@ export default function ParallaxContainer({
 }
 `;
 const PARALLAX_CONTAINER_DEMO_TSX = `import ParallaxContainer from "./index";
+import Image from "next/image";
+import messiAdidasCampaign from "@/public/lionel-messi-adidas-campaign.png";
+
 export default function ParallaxContainerDemo() {
   return (
-    <ParallaxContainer className="mx-auto my-24 max-w-xs rounded-2xl">
-      <img
-        loading="eager"
-        src="/yonex-play-full-power-ad.png"
-        alt="Yonex 'Play Full Power' campaign advertisement."
+    <ParallaxContainer className="mx-auto my-24 max-w-xl">
+      <Image
+        priority
+        src={messiAdidasCampaign}
+        alt={\`Lionel Messi figures on a soccer field wearing Argentina jerseys, with the Adidas slogan "impossible is nothing"\`}
       />
     </ParallaxContainer>
   );
 }
-  `;
+`;
 const PARALLAX_CONTAINER_TYPES_TS = `interface ParallaxContainerProps {
   children: React.ReactNode;
   maxScale?: number;
@@ -127,17 +162,15 @@ const PARALLAX_CONTAINER_TYPES_TS = `interface ParallaxContainerProps {
 }
 export type { ParallaxContainerProps };
 `;
-const USE_IS_SERVER = `import { useRef } from "react";
+const USE_IS_SERVER = `import * as React from "react";
 
 const useIsServer = () => {
-  const isServer = useRef(
-    typeof window === "undefined" || typeof document === "undefined",
-  );
+  const isServer = React.useRef(typeof window === "undefined");
   return isServer.current;
 };
 export default useIsServer;
 `;
-export const ROOT_DIRECTORY: DirectoryItem[] = [
+const ROOT_DIRECTORY: DirectoryItem[] = [
   {
     name: "components",
     type: "directory",
@@ -171,18 +204,18 @@ export const ROOT_DIRECTORY: DirectoryItem[] = [
     items: [{ name: "use-is-server.ts", type: "file", code: USE_IS_SERVER }],
   },
 ];
-export const DEFAULT_ACTIVE_FILE: ActiveFile = {
+const DEFAULT_ACTIVE_FILE: ActiveFile = {
   absolutePath: "components/parallax-container/parallax-container.demo.tsx",
   code: PARALLAX_CONTAINER_DEMO_TSX,
 };
 
-export const PROP_TABLE: PropTableProps = {
+const PROP_TABLE: PropTableProps = {
   data: [
     {
       prop: <code>children</code>,
       type: <SyntaxHighlighterServer>React.ReactNode</SyntaxHighlighterServer>,
       description:
-        "The content (e.g., an Image or a div) that will receive the parallax effect as you scroll.",
+        "The ReactNode (e.g., an Image or a div) that will receive the parallax effect as you scroll.",
       defaultValue: (
         <SyntaxHighlighterServer>(required)</SyntaxHighlighterServer>
       ),
@@ -191,10 +224,19 @@ export const PROP_TABLE: PropTableProps = {
       prop: <code>maxScale?</code>,
       type: <SyntaxHighlighterServer>number</SyntaxHighlighterServer>,
       description:
-        "The maximum scaling factor applied to the child content to create the parallax effect.",
+        "The maximum scaling factor applied to the ReactNode passed as children to create the parallax effect.",
       defaultValue: <SyntaxHighlighterServer>1.1</SyntaxHighlighterServer>,
     },
     styleProp,
     classNameProp,
   ],
+};
+
+export {
+  TITLE,
+  DESCRIPTION,
+  ROOT_DIRECTORY,
+  DEFAULT_ACTIVE_FILE,
+  PROP_TABLE,
+  ADDITIONAL_INFORMATION,
 };

@@ -26,7 +26,7 @@ export default function File({
     <button
       style={{ paddingLeft: `calc(${level} * var(--indent))` }}
       className={cn(
-        "flex w-full items-center gap-1 rounded-md py-1",
+        "flex w-full items-center gap-1 rounded-md py-1 outline-none",
         isActive
           ? isCopyTrackerOn
             ? isFileCopied
@@ -35,9 +35,9 @@ export default function File({
             : "bg-[#e4e4e4]/80"
           : isCopyTrackerOn
             ? isFileCopied
-              ? "bg-green-200/25 hover:bg-green-200/50"
-              : "bg-red-200/25 hover:bg-red-200/50"
-            : "hover:bg-[#e4e4e4]/50",
+              ? "bg-green-200/25 hover:bg-green-200/50 focus:bg-green-200/50 focus-visible:bg-green-200/50"
+              : "bg-red-200/25 hover:bg-red-200/50 focus:bg-red-200/50 focus-visible:bg-red-200/50"
+            : "hover:bg-[#e4e4e4]/50 focus:bg-[#e4e4e4]/50 focus-visible:bg-[#e4e4e4]/50",
       )}
       onClick={() => setActiveFile({ absolutePath, code })}
     >
@@ -56,6 +56,14 @@ export default function File({
           }}
           type="checkbox"
           onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => {
+            if (e.key !== "Enter") return;
+            const newStatus = !e.currentTarget.checked;
+            dispatchCopiedFiles?.({
+              type: newStatus ? "ADD" : "REMOVE",
+              items: [absolutePath],
+            });
+          }}
           checked={isFileCopied}
         />
       )}

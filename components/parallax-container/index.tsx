@@ -1,9 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { useScroll, useTransform, motion, useMotionValue } from "motion/react";
+import {
+  useScroll,
+  useTransform,
+  motion,
+  useMotionValue,
+  useSpring,
+} from "motion/react";
 import useIsServer from "@/hooks/use-is-server";
 import type { ParallaxContainerProps } from "./parallax-container.types";
+
 export default function ParallaxContainer({
   children,
   maxScale = 1.1,
@@ -13,6 +20,11 @@ export default function ParallaxContainer({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const isServer = useIsServer();
   const scale = useMotionValue(1);
+  const springifyScale = useSpring(scale, {
+    mass: 1,
+    damping: 46,
+    stiffness: 350,
+  });
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -24,6 +36,7 @@ export default function ParallaxContainer({
     const viewportHeight = window.innerHeight;
     const { height: containerHeight } =
       containerRef.current.getBoundingClientRect();
+
     return latest * (viewportHeight + containerHeight);
   });
 
@@ -50,27 +63,23 @@ export default function ParallaxContainer({
 
   React.useEffect(() => {
     if (!containerRef.current) return;
-    const setMotionScale = ({ matches }: { matches: boolean }) => {
+
+    const setScale = () => {
+      const viewportHeight = window.innerHeight;
       const { height: containerHeight } =
         containerRef.current!.getBoundingClientRect();
-      if (matches) {
-        const effectiveMaxScale = Math.min(
-          maxScale,
-          window.innerHeight / containerHeight,
-        );
-        scale.set(effectiveMaxScale);
-      } else {
-        scale.set(1);
-      }
+      const effectiveMaxScale = Math.min(
+        maxScale,
+        viewportHeight / containerHeight,
+      );
+
+      scale.set(containerHeight >= viewportHeight ? 1 : effectiveMaxScale);
     };
-    const { height: containerHeight } =
-      containerRef.current!.getBoundingClientRect();
-    const mediaQuery = window.matchMedia(`(min-height : ${containerHeight}px)`);
 
-    setMotionScale(mediaQuery);
-    mediaQuery.addEventListener("change", setMotionScale);
+    setScale();
+    window.addEventListener("resize", setScale);
 
-    return () => mediaQuery.removeEventListener("change", setMotionScale);
+    return () => window.removeEventListener("resize", setScale);
   }, [scale, maxScale]);
 
   return (
@@ -84,7 +93,7 @@ export default function ParallaxContainer({
         <motion.div
           style={{
             y,
-            scale,
+            scale: springifyScale,
             transformOrigin: "bottom",
           }}
         >

@@ -17,7 +17,7 @@ interface NavItemProps extends NavSection {
 }
 
 interface InPageNavbarProps {
-  logo: React.ReactNode;
+  Logo: React.ReactNode;
   sections: NavSection[];
 }
 

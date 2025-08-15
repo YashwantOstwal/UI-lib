@@ -1,14 +1,15 @@
-export interface ToolbarItem {
+interface ToolbarItem {
   icon: React.ReactNode | string;
   tooltip: string;
 }
 
-export interface MotionToolbarProps extends React.ComponentProps<"button"> {
+interface MotionToolbarProps extends React.ComponentProps<"button"> {
   items: ToolbarItem[];
 }
 
-export interface TooltipsContainerProps {
+interface TooltipsContainerProps {
   toolBarRef: React.RefObject<HTMLDivElement>;
   mouseIn: number;
   tooltips: string[];
 }
+export type { MotionToolbarProps, TooltipsContainerProps };

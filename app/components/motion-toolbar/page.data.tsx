@@ -5,17 +5,212 @@ import {
 } from "@/components/file-explorer/file-explorer.types";
 import type { PropTableProps } from "@/components/prop-table/prop-table.types";
 
-const INDEX_TSX = `import MotionToolbar from "./motion-toolbar";
-import { MOCK_PROPS_MOTION_TOOLBAR } from "./motion-toolbar.data";
+const INDEX_TSX = `"use client";
+import * as React from "react";
+import usePrevious from "@/hooks/use-previous";
+import useDebouncedState from "@/hooks/use-debounced-state";
 
-export default function MotionToolbarPreview() {
-  return <MotionToolbar {...MOCK_PROPS_MOTION_TOOLBAR} />;
+import type {
+  MotionToolbarProps,
+  TooltipsContainerProps,
+} from "./motion-toolbar.types";
+
+import {
+  useAnimate,
+  motion,
+  AnimatePresence,
+  usePresence,
+  useMotionValue,
+  Transition,
+  easeInOut,
+} from "motion/react";
+
+const ANIMATION_TRANSITION: Transition = {
+  duration: 0.25,
+  ease: easeInOut,
+};
+export default function MotionToolbar({ items }: MotionToolbarProps) {
+  const [mouseIn, setMouseIn] = useDebouncedState<number>(0, 150);
+  const toolBarRef = React.useRef<HTMLDivElement>(null);
+  const handleReset = () => setMouseIn(0);
+  return (
+    <>
+      <style>{\`
+      [data-component="toolbar"] {
+      --toolbar-bg: #1F2121;
+      --tooltip-bg: oklch(0.3032 0.003 197.01);
+      --icon-color: oklch(0.9304 0.003 106.45);
+      --icon-hover-bg: #2D2F2F;
+      --icon-focus-outline: #474747;
+      --tooltip-text:#f5f5f5;
+  }
+  \`}</style>
+      <div className="relative w-fit" data-component="toolbar">
+        <div
+          ref={toolBarRef}
+          className="flex gap-1 rounded-xl border border-(--icon-color)/10 bg-(--toolbar-bg) p-1.5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-2px_rgba(0,0,0,0.1)]"
+          onMouseLeave={handleReset}
+          onBlur={() => mouseIn === items?.length && handleReset()}
+        >
+          {items?.map(({ icon, tooltip, ...rest }, i) => (
+            <motion.button
+              key={tooltip}
+              aria-label={tooltip}
+              whileHover={{ backgroundColor: "var(--icon-hover-bg)" }}
+              {...rest}
+              onFocus={() => setMouseIn(i + 1)}
+              onMouseEnter={() => setMouseIn(i + 1)}
+              data-tab={i + 1}
+              className="cursor-pointer rounded-lg p-1.5 px-2 outline-offset-1 focus:bg-(--icon-hover-bg) focus:outline-2 focus:outline-(--icon-focus-outline) focus-visible:bg-(--icon-hover-bg) [&>svg]:size-6"
+            >
+              {icon}
+            </motion.button>
+          ))}
+        </div>
+        <AnimatePresence>
+          {mouseIn && (
+            <ToolTipsContainer
+              mouseIn={mouseIn}
+              toolBarRef={toolBarRef as React.RefObject<HTMLDivElement>}
+              tooltips={items?.map(({ tooltip }) => tooltip)}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+    </>
+  );
+}
+
+function ToolTipsContainer({
+  toolBarRef,
+  mouseIn,
+  tooltips,
+}: TooltipsContainerProps) {
+  const prevMouseIn = usePrevious<number>(mouseIn);
+  const [isPresent, safeToRemove] = usePresence();
+  const [tooltipContainerScope, animate] = useAnimate();
+  const x = useMotionValue(0);
+
+  const getTranslateX = React.useCallback(
+    (mouseIn: number) => {
+      const hoveredTab = toolBarRef.current.querySelector(
+        \`[data-tab="\${mouseIn}"]\`,
+      );
+      const { left: tabLeft, width: tabWidth } =
+        hoveredTab?.getBoundingClientRect() as DOMRect;
+      const finalPosition = tabLeft + tabWidth / 2;
+
+      const correspondingTooltip = tooltipContainerScope.current.querySelector(
+        \`[data-tooltip="\${mouseIn}"]\`,
+      );
+      const { left: tooltipLeft, width: tooltipWidth } =
+        correspondingTooltip.getBoundingClientRect() as DOMRect;
+      const currentPosition = tooltipLeft + tooltipWidth / 2;
+
+      const relativeTranslateX = finalPosition - currentPosition;
+      const translateX = relativeTranslateX + x.get();
+      return translateX;
+    },
+    [x, toolBarRef, tooltipContainerScope],
+  );
+
+  const getClipPath = React.useCallback(
+    (mouseIn: number) => {
+      let left = 0;
+      let right = 0;
+      for (let j = 1; j <= tooltips.length; j++) {
+        const { width } = tooltipContainerScope.current
+          .querySelector(\`[data-tooltip="\${j}"]\`)
+          .getBoundingClientRect();
+        if (j < mouseIn) {
+          left += width;
+        } else if (j > mouseIn) {
+          right += width;
+        }
+      }
+      const clipPath = \`inset(0px \${right}px 0px \${left}px round 5px)\`;
+      return clipPath;
+    },
+    [tooltips.length, tooltipContainerScope],
+  );
+
+  React.useEffect(() => {
+    if (isPresent) {
+      const keyframes = {
+        clipPath: getClipPath(mouseIn),
+        x: getTranslateX(mouseIn),
+      };
+      if (prevMouseIn === undefined) {
+        const enterAnimation = async () => {
+          await animate(tooltipContainerScope.current, keyframes, {
+            duration: 0,
+          });
+          await animate(
+            tooltipContainerScope.current,
+            { opacity: 1 },
+            ANIMATION_TRANSITION,
+          );
+        };
+        enterAnimation();
+      } else {
+        const intermediateAnimation = () => {
+          animate(
+            tooltipContainerScope.current,
+            keyframes,
+            ANIMATION_TRANSITION,
+          );
+        };
+        intermediateAnimation();
+      }
+    } else {
+      const exitAnimation = async () => {
+        await animate(
+          tooltipContainerScope.current,
+          { opacity: 0 },
+          ANIMATION_TRANSITION,
+        );
+        safeToRemove();
+      };
+      exitAnimation();
+    }
+  }, [
+    animate,
+    safeToRemove,
+    isPresent,
+    prevMouseIn,
+    mouseIn,
+    getClipPath,
+    getTranslateX,
+    tooltipContainerScope,
+  ]);
+
+  return (
+    <motion.div
+      ref={tooltipContainerScope}
+      style={{
+        x,
+      }}
+      initial={{
+        opacity: 0,
+      }}
+      className="absolute bottom-[110%] flex flex-nowrap bg-(--tooltip-bg) py-1 text-sm text-(--tooltip-text)"
+    >
+      {tooltips.map((tooltip, i) => (
+        <div
+          key={tooltip + i}
+          className="px-2 text-nowrap whitespace-nowrap"
+          data-tooltip={i + 1}
+        >
+          {tooltip}
+        </div>
+      ))}
+    </motion.div>
+  );
 }
 `;
-const MOTION_TOOLBAR_DATA_TSX = `
-import type { MotionToolbarProps } from "./motion-toolbar.types";
+const MOTION_TOOLBAR_PROPS_TSX = `import type { MotionToolbarProps } from "./motion-toolbar.types";
 
-export const MOCK_PROPS_MOTION_TOOLBAR: MotionToolbarProps = {
+export const DEMO_PROPS: MotionToolbarProps = {
   items: [
     {
       icon: (
@@ -202,211 +397,36 @@ export const MOCK_PROPS_MOTION_TOOLBAR: MotionToolbarProps = {
   ],
 };
 `;
-const MOTION_TOOLBAR_TSX = `"use client";
+const MOTION_TOOLBAR_DEMO_TSX = `import MotionToolbar from "./index";
+import { DEMO_PROPS } from "./motion-toolbar.props";
 
-import * as React from "react";
-
-import usePrevious from "@/hooks/use-previous";
-import useDebouncedState from "@/hooks/use-debounced-state";
-
-import type {
-  MotionToolbarProps,
-  TooltipsContainerProps,
-} from "./motion-toolbar.types";
-
-import {
-  useAnimate,
-  motion,
-  AnimatePresence,
-  usePresence,
-  useMotionValue,
-  Transition,
-  easeInOut,
-  ValueAnimationTransition,
-  TargetAndTransition,
-} from "motion/react";
-
-const ANIMATION_TRANSITION: Transition = {
-  duration: 0.25,
-  ease: easeInOut,
-};
-
-export default function MotionToolbar({ items }: MotionToolbarProps) {
-  const [mouseIn, setMouseIn] = useDebouncedState<number>(0, 150);
-  const toolBarRef = React.useRef<HTMLDivElement>(null);
-  const handleReset = () => setMouseIn(0);
-  return (
-    <>
-      <style>{\`
-      [data-component="toolbar"] {
-        --toolbar-bg: #1F2121;
-        --tooltip-bg: oklch(0.3032 0.003 197.01);
-        --icon-color: oklch(0.9304 0.003 106.45);
-        --icon-hover-bg: #2D2F2F;
-        --icon-focus-outline: #474747;
-        --tooltip-text: #f5f5f5;
-      }
-      \`}</style>
-      <div className="relative w-fit" data-component="toolbar">
-        <div
-          ref={toolBarRef}
-          className="flex gap-1 rounded-xl border border-(--icon-color)/10 bg-(--toolbar-bg) p-1.5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-2px_rgba(0,0,0,0.1)]"
-          onMouseLeave={handleReset}
-          onBlur={() => mouseIn === items?.length && handleReset()}
-        >
-          {items?.map(({ icon, tooltip, ...rest }, i) => (
-            <motion.button
-              aria-label={tooltip}
-              whileHover={{ backgroundColor: "var(--icon-hover-bg)" }}
-              {...rest}
-              onFocus={() => setMouseIn(i + 1)}
-              onMouseEnter={() => setMouseIn(i + 1)}
-              data-tab={i + 1}
-              className="cursor-pointer rounded-lg p-1.5 px-2 outline-offset-1 focus:bg-(--icon-hover-bg) focus:outline-2 focus:outline-(--icon-focus-outline) focus-visible:bg-(--icon-hover-bg) [&>svg]:size-6"
-            >
-              {icon}
-            </motion.button>
-          ))}
-        </div>
-        <AnimatePresence>
-          {mouseIn && (
-            <ToolTipsContainer
-              mouseIn={mouseIn}
-              toolBarRef={toolBarRef as React.RefObject<HTMLDivElement>}
-              tooltips={items?.map(({ tooltip }) => tooltip)}
-            />
-          )}
-        </AnimatePresence>
-      </div>
-    </>
-  );
-}
-
-function ToolTipsContainer({
-  toolBarRef,
-  mouseIn,
-  tooltips,
-}: TooltipsContainerProps) {
-  const prevMouseIn = usePrevious<number>(mouseIn);
-  const [isPresent, safeToRemove] = usePresence();
-  const [tooltipContainerScope, animate] = useAnimate();
-  const x = useMotionValue(0);
-
-  function getTranslateX(mouseIn: number): number {
-    const hoveredTab = toolBarRef.current.querySelector(
-      \`[data-tab="\${mouseIn}"]\`,
-    );
-    const { left: tabLeft, width: tabWidth } =
-      hoveredTab?.getBoundingClientRect() as DOMRect;
-    const finalPosition = tabLeft + tabWidth / 2;
-
-    const correspondingTooltip = tooltipContainerScope.current.querySelector(
-      \`[data-tooltip="\${mouseIn}"]\`,
-    );
-    const { left: tooltipLeft, width: tooltipWidth } =
-      correspondingTooltip.getBoundingClientRect() as DOMRect;
-    const currentPosition = tooltipLeft + tooltipWidth / 2;
-
-    const relativeTranslateX = finalPosition - currentPosition;
-    const translateX = relativeTranslateX + x.get();
-    return translateX;
-  }
-
-  function getClipPath(mouseIn: number): string {
-    let left = 0;
-    let right = 0;
-    for (let j = 1; j <= tooltips.length; j++) {
-      const { width } = tooltipContainerScope.current
-        .querySelector(\`[data-tooltip="\${j}"]\`)
-        .getBoundingClientRect();
-      if (j < mouseIn) {
-        left += width;
-      } else if (j > mouseIn) {
-        right += width;
-      }
-    }
-    const clipPath = \`inset(0px \${right}px 0px \${left}px round 5px)\`;
-    return clipPath;
-  }
-
-  const animateTooltipContainer = async (
-    keyframes: TargetAndTransition,
-    options: ValueAnimationTransition<any> | undefined = ANIMATION_TRANSITION,
-  ) => {
-    await animate(tooltipContainerScope.current, keyframes, options);
-  };
-
-  React.useEffect(() => {
-    if (isPresent) {
-      const enterAnimation = async () => {
-        const keyframes = {
-          clipPath: getClipPath(mouseIn),
-          x: getTranslateX(mouseIn),
-        };
-        await animateTooltipContainer(keyframes, { duration: 0 });
-        await animateTooltipContainer({ opacity: 1 }, ANIMATION_TRANSITION);
-      };
-      enterAnimation();
-    } else {
-      const exitAnimation = async () => {
-        await animateTooltipContainer({ opacity: 0 }, ANIMATION_TRANSITION);
-        safeToRemove();
-      };
-      exitAnimation();
-    }
-  }, [isPresent]);
-
-  React.useEffect(() => {
-    if (!prevMouseIn) return;
-    const keyframes = {
-      clipPath: getClipPath(mouseIn),
-      x: getTranslateX(mouseIn),
-    };
-    animate(tooltipContainerScope.current, keyframes, ANIMATION_TRANSITION);
-  }, [prevMouseIn, mouseIn]);
-
-  return (
-    <motion.div
-      ref={tooltipContainerScope}
-      style={{ x }}
-      initial={{ opacity: 0 }}
-      className="absolute bottom-[110%] flex flex-nowrap bg-(--tooltip-bg) py-1 text-sm text-(--tooltip-text)"
-    >
-      {tooltips.map((tooltip, i) => (
-        <div
-          key={tooltip + i}
-          className="px-2 text-nowrap whitespace-nowrap"
-          data-tooltip={i + 1}
-        >
-          {tooltip}
-        </div>
-      ))}
-    </motion.div>
-  );
+export default function MotionToolbarDemo() {
+  return <MotionToolbar items={DEMO_PROPS.items} />;
 }
 `;
-const MOTION_TOOLBAR_TYPES_TS = `export interface ToolbarItem {
-  icon: React.ReactNode;
+const MOTION_TOOLBAR_TYPES_TS = `interface ToolbarItem {
+  icon: React.ReactNode | string;
   tooltip: string;
 }
 
-export interface MotionToolbarProps extends React.ComponentProps<"button"> {
+interface MotionToolbarProps extends React.ComponentProps<"button"> {
   items: ToolbarItem[];
 }
 
-export interface TooltipsContainerProps {
+interface TooltipsContainerProps {
   toolBarRef: React.RefObject<HTMLDivElement>;
   mouseIn: number;
   tooltips: string[];
 }
+export type { MotionToolbarProps, TooltipsContainerProps };
+
 `;
 const UTILS_TS = `import { twMerge } from "tailwind-merge";
 import clsx, { ClassValue } from "clsx";
 
 export const cn = (...args: ClassValue[]) => twMerge(clsx(args));
 `;
-const USE_DEBOUNCED_STATE_TS = `"use client";
-import * as React from "react";
+const USE_DEBOUNCED_STATE_TS = `import * as React from "react";
 
 export default function useDebouncedState<T>(initialValue: T, delay: number) {
   const [state, setState] = React.useState(initialValue);
@@ -427,8 +447,7 @@ export default function useDebouncedState<T>(initialValue: T, delay: number) {
   return [state, setDebouncedState] as const;
 }
 `;
-const USE_PREVIOUS_TS = `"use client";
-import * as React from "react";
+const USE_PREVIOUS_TS = `import * as React from "react";
 
 export default function usePrevious<T>(state: T): T | undefined {
   const prevState = React.useRef<T | undefined>(undefined);
@@ -453,14 +472,14 @@ export const ROOT_DIRECTORY: DirectoryItem[] = [
             code: INDEX_TSX,
           },
           {
-            name: "motion-toolbar.data.tsx",
+            name: "motion-toolbar.props.tsx",
             type: "file",
-            code: MOTION_TOOLBAR_DATA_TSX,
+            code: MOTION_TOOLBAR_PROPS_TSX,
           },
           {
-            name: "motion-toolbar.tsx",
+            name: "motion-toolbar.demo.tsx",
             type: "file",
-            code: MOTION_TOOLBAR_TSX,
+            code: MOTION_TOOLBAR_DEMO_TSX,
           },
           {
             name: "motion-toolbar.types.ts",
@@ -496,8 +515,8 @@ export const ROOT_DIRECTORY: DirectoryItem[] = [
   },
 ];
 export const DEFAULT_ACTIVE_FILE: ActiveFile = {
-  absolutePath: "components/motion-toolbar/index.tsx",
-  code: INDEX_TSX,
+  absolutePath: "components/motion-toolbar/motion-toolbar.demo.tsx",
+  code: MOTION_TOOLBAR_DEMO_TSX,
 };
 
 export const PROP_TABLE: PropTableProps = {
@@ -537,3 +556,6 @@ export const PROP_TABLE: PropTableProps = {
     },
   ],
 };
+export const TITLE = "Motion Toolbar";
+export const DESCRIPTION =
+  "A reusable component that smoothly transitions between tooltips with a sliding animation as you move between toolbar items, resulting in a polished and effortless flow.";

@@ -9,6 +9,7 @@ export async function highlight(code: string, lang?: BundledLanguage) {
   const out = await codeToHast(code, {
     lang: lang ?? "ts",
     theme: "github-light",
+    tabindex: "-1",
   });
 
   return toJsxRuntime(out, {

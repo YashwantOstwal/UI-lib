@@ -15,7 +15,7 @@ export default function PropTable({
       <div className="grid grid-rows-[auto_auto] text-[15px] leading-[1.4286]">
         <table
           className={cn(
-            "w-full min-w-2xl border border-dashed border-[#c6c6c6] bg-[#EFEFF2] text-left",
+            "w-full min-w-2xl border border-dashed border-[#c6c6c6] bg-[#ededed] text-left",
             className,
           )}
           {...rest}

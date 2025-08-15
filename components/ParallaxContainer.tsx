@@ -55,7 +55,9 @@ export default function ParallaxContainer({
   React.useEffect(() => {
     if (!containerRef.current) return;
 
-    const updateScale = (viewportHeight: number) => {
+    const setScale = () => {
+      console.log("aloha");
+      const viewportHeight = window.innerHeight;
       const { height: containerHeight } =
         containerRef.current!.getBoundingClientRect();
       const effectiveMaxScale = Math.min(
@@ -70,15 +72,10 @@ export default function ParallaxContainer({
       }
     };
 
-    const handleResize = () => {
-      const viewportHeight = window.innerHeight;
-      updateScale(viewportHeight);
-    };
+    setScale();
+    window.addEventListener("resize", setScale);
 
-    updateScale(window.innerHeight);
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", setScale);
   }, [scale, maxScale]);
 
   return (

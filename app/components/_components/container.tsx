@@ -67,19 +67,19 @@ export default function Container({
   );
 }
 Container.Title = function ContainerTitle({ className, ...rest }: TitleProps) {
-  return <Title className={cn("mt-2", className)} {...rest} />;
+  return <Title className={cn("mt-2.5", className)} {...rest} />;
 };
 Container.Description = function ContainerDescription({
   className,
   ...rest
 }: DescriptionProps) {
-  return <Description className={cn("mt-2", className)} {...rest} />;
+  return <Description className={cn("mt-1.5", className)} {...rest} />;
 };
 Container.FileExplorer = function ContainerFileExplorer({
   className,
   ...rest
 }: FileExplorerProps) {
-  return <FileExplorer className={cn("mt-6", className)} {...rest} />;
+  return <FileExplorer className={cn("mt-16", className)} {...rest} />;
 };
 Container.PropTable = function ContainerPropTable({
   className,
@@ -91,5 +91,5 @@ Container.Preview = function ContainerPreview({
   className,
   ...rest
 }: PreviewProps) {
-  return <Preview className={cn("my-10", className)} {...rest} />;
+  return <Preview className={cn("mt-10", className)} {...rest} />;
 };

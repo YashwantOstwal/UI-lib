@@ -1,21 +1,13 @@
-"use client";
-import { useRouter } from "next/navigation";
 import LeftArrow from "@/icons/left-arrow.icon";
 import UnderlineText from "./underline-text";
+import Link from "next/link";
 export default function BackButton() {
-  const router = useRouter();
   return (
-    // <a
-    //   className="flex cursor-pointer items-center text-sm font-medium"
-    // >
-    //   <LeftArrow className="size-4" />
-    //   &nbsp;Back
-    // </a>
-    <a onClick={() => router.back()}>
-      <UnderlineText className="flex cursor-pointer items-center text-sm font-medium">
+    <Link href="/">
+      <UnderlineText className="flex items-center text-sm font-medium">
         <LeftArrow className="size-4" />
-        &nbsp;Back
+        &nbsp;Home
       </UnderlineText>
-    </a>
+    </Link>
   );
 }

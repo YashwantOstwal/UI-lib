@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 
 export default function useDebouncedState<T>(initialValue: T, delay: number) {

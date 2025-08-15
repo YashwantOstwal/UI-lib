@@ -1,18 +1,14 @@
 import ParallaxContainer from "./index";
-import Yonex from "@/public/yonex-play-full-power-ad.png"; //not in demo
-import Image from "next/image"; //not in demo
+import messiAdidasCampaign from "@/public/lionel-messi-adidas-campaign.png";
+import Image from "next/image";
+
 export default function ParallaxContainerDemo() {
   return (
-    <ParallaxContainer className="mx-auto my-24 max-w-xs rounded-2xl">
-      {/* <img
-        loading="eager"
-        src="/yonex-play-full-power-ad.png"
-        alt="Yonex 'Play Full Power' campaign advertisement."
-      /> */}
+    <ParallaxContainer className="mx-auto my-24 max-w-xl">
       <Image
         priority
-        src={Yonex}
-        alt="Yonex 'Play Full Power' campaign advertisement."
+        src={messiAdidasCampaign}
+        alt={`Lionel Messi figures on a soccer field wearing Argentina jerseys, with the Adidas slogan "impossible is nothing"`}
       />
     </ParallaxContainer>
   );
