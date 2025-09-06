@@ -7,24 +7,27 @@ interface UnderlineText {
   style?: MotionStyle;
   className?: string;
   children: React.ReactNode;
+  isParentFocused: boolean;
 }
 export default function UnderlineText({
   children,
   className,
   style,
+  isParentFocused,
   ...rest
 }: UnderlineText) {
   return (
     <motion.div
       initial="initial"
       whileHover="whileHover"
-      className={cn("relative w-fit", className)}
+      animate={isParentFocused ? "whileHover" : "initial"}
+      className={cn("relative w-fit focus-visible:!outline-none", className)}
       style={{ ...style }}
       {...rest}
     >
       {children}
       <motion.div
-        className="absolute bottom-0 h-0.5 bg-gray-900"
+        className="bg-foreground absolute bottom-0 h-0.5"
         variants={{
           initial: { width: "0%", right: "0px", left: "auto" },
           whileHover: { width: "100%", left: "0px", right: "auto" },
@@ -37,7 +40,7 @@ export default function UnderlineText({
             duration: 0,
           },
           default: {
-            ease: "easeInOut",
+            ease: "easeOut",
           },
         }}
       />

@@ -26,18 +26,18 @@ export default function File({
     <button
       style={{ paddingLeft: `calc(${level} * var(--indent))` }}
       className={cn(
-        "flex w-full items-center gap-1 rounded-md py-1 outline-none",
+        "flex w-full items-center gap-1 rounded-sm py-1 outline-none",
         isActive
           ? isCopyTrackerOn
             ? isFileCopied
-              ? "bg-green-200/80"
-              : "bg-red-200/80"
-            : "bg-[#e4e4e4]/80"
+              ? "bg-green-300/55"
+              : "bg-red-300/55"
+            : "bg-accent"
           : isCopyTrackerOn
             ? isFileCopied
-              ? "bg-green-200/25 hover:bg-green-200/50 focus:bg-green-200/50 focus-visible:bg-green-200/50"
-              : "bg-red-200/25 hover:bg-red-200/50 focus:bg-red-200/50 focus-visible:bg-red-200/50"
-            : "hover:bg-[#e4e4e4]/50 focus:bg-[#e4e4e4]/50 focus-visible:bg-[#e4e4e4]/50",
+              ? "bg-green-300/25 hover:bg-green-300/40 focus:bg-green-300/40 focus-visible:bg-green-300/40"
+              : "bg-red-300/25 hover:bg-red-300/40 focus:bg-red-300/40 focus-visible:bg-red-300/40"
+            : "hover:bg-accent/75 focus:bg-accent/75 focus-visible:bg-accent/75",
       )}
       onClick={() => setActiveFile({ absolutePath, code })}
     >
@@ -46,7 +46,7 @@ export default function File({
       <span>{name}</span>
       {isCopyTrackerOn && (
         <input
-          className="size-3.5 accent-green-600"
+          className="size-3.5 accent-green-600 dark:accent-green-400"
           onChange={(e) => {
             const isChecked = e.currentTarget.checked;
             dispatchCopiedFiles?.({

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export default function useDebouncedState<T>(initialValue: T, delay: number) {
+export function useDebouncedState<T>(initialValue: T, delay: number) {
   const [state, setState] = React.useState(initialValue);
   const timeoutRef = React.useRef<NodeJS.Timeout>(undefined);
 

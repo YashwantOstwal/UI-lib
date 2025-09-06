@@ -8,7 +8,10 @@ import { codeToHast } from "shiki/bundle/web";
 export async function highlight(code: string, lang?: BundledLanguage) {
   const out = await codeToHast(code, {
     lang: lang ?? "ts",
-    theme: "github-light",
+    themes: {
+      light: "github-light",
+      dark: "vesper",
+    },
     tabindex: "-1",
   });
 

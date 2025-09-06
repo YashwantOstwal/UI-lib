@@ -12,7 +12,7 @@ export default function Button({ children, className, ...rest }: Button) {
   return (
     <motion.button
       className={cn(
-        "flex cursor-pointer items-center justify-center rounded-[8px] bg-white px-2.5 py-2 text-sm shadow-[0_1px_2px_0_rgba(0,0,0,.2),_inset_0_1px_0_0_rgba(255,255,255,0.07)] hover:opacity-85",
+        "bg-secondary text-secondary-foreground border-background hover:bg-accent/85 hover:text-accent-foreground/85 relative flex cursor-pointer items-center justify-center rounded-[8px] border px-2.5 py-2 text-sm shadow-[0_1px_rgba(255,255,255,0.1)_inset,0_1px_3px_rgba(0,0,0,0.2)]",
         className,
       )}
       {...rest}

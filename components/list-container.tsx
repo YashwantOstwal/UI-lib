@@ -17,9 +17,7 @@ export default function ListContainer({
   return (
     <div
       className={cn(
-        "border border-t-0 border-dashed border-[#c6c6c6] px-1.5 py-3",
-        variant === "pro-tips" && "bg-green-100/15",
-        variant === "caveats" && "bg-[#FFFDF5]/15",
+        "border-border bg-muted border border-t-0 border-dashed px-1.5 py-3",
         className,
       )}
       {...rest}
@@ -27,17 +25,17 @@ export default function ListContainer({
       <span
         className={cn(
           "font-medium capitalize",
-          variant === "pro-tips" && "text-green-900",
-          variant === "caveats" && "text-orange-900",
+          variant === "pro-tips" && "text-[#032f62] dark:text-[#99ffe4]",
+          variant === "caveats" && "text-[#6f42c1] dark:text-[#ffc799]",
         )}
       >
         {title}
       </span>
       <div
         className={cn(
-          "space-y-4 p-5",
-          variant === "pro-tips" && "text-green-900",
-          variant === "caveats" && "text-orange-800",
+          "space-y-4 p-5 pb-0",
+          variant === "pro-tips" && "text-[#032f62] dark:text-[#99ffe4]",
+          variant === "caveats" && "text-[#6f42c1] dark:text-[#ffc799]",
         )}
       >
         {list.map((eachListItem, i) => (

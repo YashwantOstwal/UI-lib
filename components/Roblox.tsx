@@ -46,7 +46,7 @@ export default function Roblox({
           className="font-poppins sticky h-(--h) w-[85%] text-[clamp(0px,_6.5vw,_45px)] leading-none font-bold uppercase [perspective:1000px]"
         >
           <motion.div
-            className="relative h-full [&>div]:bg-white [&>div]:text-gray-900 [&>div]:shadow-[0_0_50px_25px_inset] [&>div]:shadow-[#c1c1c1] [&>div]:[text-shadow:0px_1px_1px_rgba(255,_255,_255,_0.5)]"
+            className="[&>div]:bg-muted [&>div]:text-muted-foreground relative h-full"
             style={{
               rotateX,
               // rotateY,

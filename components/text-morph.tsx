@@ -25,7 +25,7 @@ const TextMorph = ({ children, copied }: TextMorphProps) => {
         {!copied && (
           <motion.div
             key="copy-icon"
-            layoutId="copy-icon"
+            layoutId={id}
             variants={ANIMATION_VARIANTS}
             initial="fadeOut"
             animate="fadeIn"
@@ -50,6 +50,7 @@ const TextMorph = ({ children, copied }: TextMorphProps) => {
               animate="fadeIn"
               exit="fadeOut"
               variants={ANIMATION_VARIANTS}
+              transition={{ duration: 0.3 }}
             >
               {eachChar}
             </motion.div>

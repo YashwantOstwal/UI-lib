@@ -18,7 +18,7 @@ import Ilia from "@/public/ilia.png";
 import Islam from "@/public/islam.png";
 import Merab from "@/public/merab.png";
 import Image from "next/image";
-import useIsServer from "@/hooks/use-is-server";
+import { useIsServer } from "@/hooks/use-is-server";
 
 const CLICK_TIMEOUT_INTERVAL = 1000;
 const TOGGLE_INTERVAL = 4000;

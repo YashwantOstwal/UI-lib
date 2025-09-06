@@ -11,7 +11,7 @@ export default function Title({
   return (
     <h1
       className={cn(
-        "text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl",
+        "text-2xl font-semibold tracking-tight sm:text-3xl",
         className,
       )}
       {...rest}

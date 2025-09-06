@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import { CSSProperties } from "react";
 
@@ -12,7 +13,7 @@ const ArrowDownIcon = ({
 }) => (
   <motion.svg
     style={{ ...style }}
-    className={className}
+    className={cn(className, "stroke-foreground")}
     initial={{ rotate: "-90deg" }}
     animate={{ rotate: openSubtree ? "0deg" : "-90deg" }}
     width="24"
@@ -21,7 +22,6 @@ const ArrowDownIcon = ({
     viewBox="0 0 24 24"
   >
     <path
-      stroke="#202020"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="1.5px"

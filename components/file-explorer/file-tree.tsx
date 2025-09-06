@@ -12,11 +12,13 @@ export default function FileTree({ rootDirectory }: FileTreeProps) {
       <style>
         {`
       #file-tree{
-      --indent:12px;
+      --indent:8px;
       }
+      @media (min-width:768px){
+      --indent:12px;}
       `}
       </style>
-      <div id="file-tree" className="space-y-0.5 text-[#202020]">
+      <div id="file-tree" className="space-y-0.5">
         {rootDirectory
           .sort(sortDirectory)
           .map((props, i) =>

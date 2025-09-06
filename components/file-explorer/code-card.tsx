@@ -1,13 +1,13 @@
 "use client";
 import * as React from "react";
 import type { EnhancedDirectoryItem } from "./file-explorer.types";
-import SyntaxHighlighterClient from "../syntax-highlighter/client";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import ArrowDownIcon from "./icons/ArrowDown";
 import CloseIcon from "./icons/CloseIcon";
 import FileTree from "./file-tree";
 import FileHeader from "./file-header";
 import { useActiveFile } from "./providers/ActiveFileProvider";
+import Code from "./code-canvas";
 export default function CodeCard({
   enhancedRootDirectory,
 }: {
@@ -19,24 +19,18 @@ export default function CodeCard({
   } = useActiveFile();
   return (
     <>
-      <div className="relative z-10 w-full flex-1 overflow-hidden rounded-xl bg-[#ededed] p-1 md:shadow-[0px_8px_12px_-4px_rgba(15,12,12,0.08),_0px_0px_2px_0px_rgba(15,12,12,0.10),_0px_1px_2px_0px_rgba(15,12,12,0.10)]">
+      {/* If you make changes here make sure to udpate them in the container */}
+      <div className="bg-muted relative z-10 w-full flex-1 overflow-hidden rounded-2xl p-1 md:rounded-xl md:shadow-[0px_8px_12px_-4px_rgba(15,12,12,0.08),_0px_0px_2px_0px_rgba(15,12,12,0.10),_0px_1px_2px_0px_rgba(15,12,12,0.10)] dark:md:shadow-[0_4px_12px_rgba(0,0,0,0.35),0_1px_rgba(255,255,255,0.05)_inset]">
         <div className="flex items-center justify-between gap-2 px-1 py-1.5 font-medium">
           <button
             onClick={() => setOpen((prev) => !prev)}
-            className="shrink-0 rounded-full bg-white md:hidden"
+            className="bg-card shrink-0 rounded-full md:hidden"
           >
             <ArrowDownIcon className="size-6" openSubtree={open} />
           </button>
           <FileHeader {...{ absolutePath, code }} />
         </div>
-        <div
-          id="code-container"
-          className="relative flex h-[450px] overflow-clip rounded-[8px] border-dashed border-[#c6c6c6] bg-white shadow-[0px_8px_12px_-4px_rgba(16,12,12,0.08),0px_0px_2px_0px_rgba(16,12,12,0.10),0px_1px_2px_0px_rgba(16,12,12,0.10)] md:h-[600px] [&_pre]:min-h-full [&_pre]:w-full [&_pre]:overflow-auto [&_pre]:rounded-[6px] [&_pre]:p-3 [&_pre]:md:p-4"
-        >
-          <SyntaxHighlighterClient loader={<pre>{code}</pre>}>
-            {code}
-          </SyntaxHighlighterClient>
-        </div>
+        <Code code={code} />
       </div>
       <MotionConfig transition={{ ease: "easeInOut" }}>
         <AnimatePresence>

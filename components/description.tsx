@@ -10,7 +10,7 @@ export default function Description({
   return (
     <p
       className={cn(
-        "text-base text-gray-700 2xl:text-lg 2xl:leading-snug",
+        "text-base text-(--muted-foreground) 2xl:text-lg",
         className,
       )}
       {...rest}

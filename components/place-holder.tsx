@@ -1,59 +1,41 @@
 import { cn } from "@/lib/utils";
-import React, { CSSProperties } from "react";
-
+import React, { CSSProperties, ReactNode } from "react";
+import { PlusIcon } from "lucide-react";
 export default function PlaceHolder({
   className,
   msg1,
   msg2,
   style,
-  center = (
-    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-      <path
-        stroke="#141414"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5px"
-        d="M12 5.75V18.25"
-        fill="none"
-      ></path>
-      <path
-        stroke="#141414"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5px"
-        d="M18.25 12L5.75 12"
-        fill="none"
-      ></path>
-    </svg>
-  ),
+  center = <PlusIcon />,
   index = 0,
-  ...props
+  ...rest
 }: {
   className?: string;
-  msg1?: React.ReactNode | string;
-  msg2?: React.ReactNode | string;
+  msg1: React.ReactNode;
+  msg2: React.ReactNode;
   style?: CSSProperties;
   index?: number;
-  center?: React.ReactNode | string;
+  center?: React.ReactNode;
 } & React.ComponentProps<"div">) {
-  const shadesOfWhite = ["#E7E7E7", "#D8D8D8", "#C9C9C9", "#BABABA", "#ABABAB"];
-
+  function Message({ children }: { children: ReactNode }) {
+    return (
+      <span className="absolute top-0.75 left-0.75 text-[9px] leading-none sm:text-xs">
+        {children}
+      </span>
+    );
+  }
   return (
     <div
-      {...props}
-      className={cn("size-full p-7 sm:p-10", className)}
-      style={{ backgroundColor: shadesOfWhite[index], ...style }}
+      className={cn("p-7 opacity-85 sm:p-10", className)}
+      style={{ backgroundColor: `var(--chart-${index + 1})`, ...style }}
+      {...rest}
     >
-      <div className="relative size-full border border-dashed p-4 sm:p-5">
-        <span className="absolute top-1 left-1 text-[11px] leading-none sm:text-xs">
-          {msg1}
-        </span>
+      <div className="border-foreground relative size-full border border-dashed p-4 sm:p-5">
+        <Message>{msg1}</Message>
         <div className="size-full p-3.5 sm:p-5">
-          <div className="relative z-20 size-full border p-4 sm:px-6 sm:py-5">
-            <div className="relative grid size-full place-items-center overflow-hidden border border-dashed">
-              <span className="absolute top-1 left-1 text-[11px] leading-none sm:text-xs">
-                {msg2}
-              </span>
+          <div className="border-foreground relative z-20 size-full border p-4 sm:px-6 sm:py-5">
+            <Message>{msg2}</Message>
+            <div className="border-foreground relative grid size-full place-items-center overflow-hidden border border-dashed">
               {center}
             </div>
           </div>

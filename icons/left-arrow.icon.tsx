@@ -7,14 +7,12 @@ export default function LeftArrowIcon(
   return (
     <svg {...props} width="24" height="24" fill="none" viewBox="0 0 24 24">
       <path
-        stroke="#141414"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5px"
         d="M10.25 6.75L4.75 12L10.25 17.25"
       />
       <path
-        stroke="#141414"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5px"

@@ -1,0 +1,125 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "100xui",
+  "homepage": "http://localhost:3000",
+  "items": [
+    {
+      "name": "motion-dock",
+      "type": "registry:block",
+      "title": "Motion Dock",
+      "description": "A reusable component where tooltips slide smoothly between dock items, making the motion dock feel natural and easy to use.",
+      "files": [
+        {
+          "path": "components/(package)/motion-dock/motion-dock.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "hooks/use-debounced-state.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "hooks/use-previous.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "dependencies": ["motion", "clsx", "tw-merge"]
+    },
+    {
+      "name": "in-page-navbar",
+      "type": "registry:block",
+      "title": "In-page navbar",
+      "description": "A smart navigation bar that tracks the section progress as you scroll down the page, providing a clear visual indicator of your progress through each section. This Navbar is best suited for single-page applications (SPAs).",
+      "files": [
+        {
+          "path": "components/(package)/in-page-navbar/in-page-navbar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "hooks/use-is-server.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "dependencies": ["motion", "clsx", "tw-merge", "lucide-react"]
+    },
+    {
+      "name": "spinning-carousel",
+      "type": "registry:block",
+      "title": "Spinning carousel",
+      "description": "A reusable, responsive carousel that loops through any number of cards in a smooth spinning motion, automatically showcasing content in compact spaces, perfect for testimonials, product highlights, or feature lists.",
+      "files": [
+        {
+          "path": "components/(package)/spinning-carousel/spinning-carousel.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "dependencies": ["motion", "clsx", "tw-merge"]
+    },
+    {
+      "name": "parallax-cards",
+      "type": "registry:block",
+      "title": "Parallax cards",
+      "description": "A reusable and responsive component that adds a modern parallax effect to your website, making it ideal for showcasing a list of content blocks or features.",
+      "files": [
+        {
+          "path": "components/(package)/parallax-cards/parallax-cards.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "dependencies": ["motion", "clsx", "tw-merge"]
+    },
+    {
+      "name": "parallax-container",
+      "type": "registry:block",
+      "title": "Parallax container",
+      "description": "A reusable, fully responsive component that applies a smooth parallax effect to the provided child component. This popular design technique adds depth, creates an immersive experience, and makes your website feel more engaging.",
+      "files": [
+        {
+          "path": "components/(package)/parallax-container/parallax-container.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "hooks/use-is-server.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "dependencies": ["motion", "clsx", "tw-merge"]
+    },
+    {
+      "name": "text-switcher",
+      "type": "registry:block",
+      "title": "Text switcher",
+      "description": "A reusable, fully responsive component that applies a smooth parallax effect to the provided child component. This popular design technique adds depth, creates an immersive experience, and makes your website feel more engaging.",
+      "files": [
+        {
+          "path": "components/(package)/text-switcher/text-switcher.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "dependencies": ["motion", "clsx", "tw-merge"]
+    }
+  ]
+}

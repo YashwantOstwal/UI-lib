@@ -10,7 +10,10 @@ export default async function SyntaxHighlighterServer({
 }: SyntaxHighlighterServerProps) {
   const out = await codeToHtml(children, {
     lang,
-    theme: "github-light",
+    themes: {
+      light: "github-light",
+      dark: "vesper",
+    },
     tabindex: "-1",
   });
 

@@ -3,244 +3,58 @@ import {
   type DirectoryItem,
 } from "@/components/file-explorer/file-explorer.types";
 import { ListContainerProps } from "@/components/list-container";
-import type { PropTableProps } from "@/components/prop-table/prop-table.types";
+import type { PropTableProps } from "@/app/components/_components/prop-table";
 import SyntaxHighlighterServer from "@/components/syntax-highlighter/server";
 
-const IN_PAGE_NAVBAR_DEMO_TSX = `import type { InPageNavbarProps } from "./in-page-navbar.types";
-import InPageNavbar from "./index";
+const IN_PAGE_NAVBAR_DEMO_TSX = `import { InPageNavbar } from "./in-page-navbar";
 
-const LOGO = (
-  <div className="cursor-pointer px-3 py-0.75 text-sm font-semibold">
-    Acme Inc.
-  </div>
-);
-
-const SECTIONS = [
-  {
-    label: "About",
-    id: "about",
-  },
-  {
-    label: "Pricing",
-    id: "pricing",
-  },
-  {
-    label: "File explorer",
-    id: "file-explorer",
-  },
-  {
-    label: "Props table",
-    id: "prop-table",
-  },
-];
-
-const DEMO_PROPS: InPageNavbarProps = {
-  Logo: LOGO,
-  sections: SECTIONS,
-};
-export default function InPageNavbarDemo() {
-  return <InPageNavbar {...DEMO_PROPS} />;
+export function InPageNavbarDemo() {
+  return <InPageNavbar logo={logo} sections={sections} />;
 }
+
+const logo = (
+    <div className="text-lg leading-none font-semibold">
+      100<span className="text-destructive">x</span>UI
+    </div>
+  ),
+  sections = [
+    {
+      label: "About",
+      id: "about",
+    },
+    {
+      label: "Pricing",
+      id: "pricing",
+    },
+    {
+      label: "Usage",
+      id: "usage",
+    },
+    {
+      label: "File explorer",
+      id: "file-explorer",
+    },
+    {
+      label: "Documentation",
+      id: "prop-table",
+    },
+  ];
 `;
-const INDEX_TSX = `"use client";
+const IN_PAGE_NAVBAR_TSX = `
+"use client";
 
 import * as React from "react";
-import Link from "next/link";
-import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useTransform,
+  Variants,
+} from "motion/react";
+import { EqualIcon, XIcon } from "lucide-react";
 
-import BurgerIcon from "./icons/burger.icon";
-import CloseIcon from "./icons/close.icon";
-import useIsServer from "@/hooks/use-is-server";
-
-import type {
-  InPageNavbarProps,
-  NavButtonGroupProps,
-  NavItemProps,
-} from "./in-page-navbar.types";
-import { usePathname } from "next/navigation";
-
-const fadeVariants = {
-  fadeIn: { opacity: 1 },
-  fadeOut: { opacity: 0 },
-};
-
-export default function InPageNavbar({ Logo, sections }: InPageNavbarProps) {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
-  const [isSmallScreen, setIsSmallScreen] = React.useState(false);
-  const isServer = useIsServer();
-  const pathname = usePathname();
-
-  const navButtons = (
-    <NavButtonGroup
-      className="gap-2 max-sm:mx-auto max-sm:grid max-sm:max-w-fit max-sm:grid-rows-3 max-sm:py-8 max-sm:text-sm sm:flex sm:items-center sm:gap-2"
-      sections={sections}
-      isServer={isServer}
-    />
-  );
-
-  React.useEffect(() => {
-    // On screen resize, if the width exceeds 639px, the desktop version of the navbar will be rendered.
-    const handleMediaQuery = ({ matches }: { matches: boolean }) =>
-      setIsSmallScreen(matches);
-
-    const mediaQuery = window.matchMedia("(max-width:639px)");
-
-    mediaQuery.addEventListener("change", handleMediaQuery);
-    return () => mediaQuery.removeEventListener("change", handleMediaQuery);
-  }, []);
-
-  return (
-    <>
-      <style>{\`
-  [data-component="in-page-navbar"] {
-    --nav-bg: #ffffffdd; 
-    --nav-text: #101828;
-    --nav-btn-bg: #f5f5f5;
-    --nav-btn-text: #101828;
-    --nav-progress-bg: #ababab60;
-    --nav-progress-text: #4b5563;
-  }
-\`}</style>
-      <div
-        data-component="in-page-navbar"
-        className="pointer-events-none fixed inset-x-4.5 top-1.5 z-[100]"
-      >
-        <motion.div
-          initial={false}
-          animate={isSidebarOpen && isSmallScreen ? "fadeOut" : "fadeIn"}
-          variants={fadeVariants}
-          className="pointer-events-auto mx-auto flex max-w-xl items-center justify-between rounded-lg bg-(--nav-bg) p-3 text-sm font-medium text-(--nav-text) shadow-md backdrop-blur-[2px] sm:rounded-xl"
-        >
-          <Link
-            scroll={false}
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
-            }}
-            href={pathname}
-          >
-            {Logo}
-          </Link>
-          <>
-            <nav className="hidden sm:block">{navButtons}</nav>
-            <button
-              className="cursor-pointer sm:hidden"
-              aria-label="open sidebar"
-              onClick={() => {
-                setIsSmallScreen(true);
-                setIsSidebarOpen(true);
-              }}
-            >
-              <BurgerIcon />
-            </button>
-          </>
-        </motion.div>
-      </div>
-      <AnimatePresence>
-        {isSmallScreen && isSidebarOpen && (
-          <motion.div
-            initial="fadeOut"
-            animate="fadeIn"
-            exit="fadeOut"
-            variants={fadeVariants}
-            data-component="in-page-navbar"
-            className="fixed inset-x-4.5 top-1.5 z-[110] overflow-hidden rounded-lg bg-(--nav-bg)"
-          >
-            <button
-              onClick={() => setIsSidebarOpen(false)}
-              aria-label="close sidebar"
-              className="absolute top-3.5 right-2 cursor-pointer"
-            >
-              <CloseIcon />
-            </button>
-            <nav>{navButtons}</nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
-}
-
-function NavButtonGroup({
-  sections,
-  isServer,
-  className,
-}: NavButtonGroupProps) {
-  const { scrollY } = useScroll();
-  return (
-    <ol className={className}>
-      {sections.map((props) => (
-        <NavItem
-          key={props.id}
-          scrollY={scrollY}
-          isServer={isServer}
-          {...props}
-        />
-      ))}
-    </ol>
-  );
-}
-
-const NavItem = ({ label, id, isServer, scrollY }: NavItemProps) => {
-  const [targetElement, setTargetElement] = React.useState<HTMLElement | null>(
-    null,
-  );
-
-  const sectionProgress = useTransform(scrollY, (latest) => {
-    if (isServer || targetElement === null) return 0;
-    const viewportHeight = window.innerHeight;
-    const targetElementTop = targetElement.offsetTop;
-    const targetElementHeight = targetElement.offsetHeight;
-    const visibleRatio =
-      (latest + viewportHeight - targetElementTop) / targetElementHeight;
-    return Math.min(1, Math.max(visibleRatio, 0));
-  });
-
-  const clipPath = useTransform(
-    sectionProgress,
-    [0, 1],
-    ["inset(0% 100% 0% 0%)", "inset(0% 0% 0% 0%)"],
-  );
-
-  React.useEffect(() => {
-    const element = document.getElementById(id);
-    if (!element) {
-      console.warn(
-        \`No section found with id="\${id}". In-Page Navbar component is rendered after all the sections it tracks.\`,
-      );
-    }
-    setTargetElement(element);
-  }, [id]);
-  return (
-    <Link
-      href={"#" + id}
-      scroll={false}
-      onClick={() => {
-        targetElement?.scrollIntoView({ behavior: "smooth" });
-      }}
-      className="relative overflow-hidden rounded-full border border-[#ababab60] bg-(--nav-btn-bg) font-medium text-(--nav-btn-text) capitalize transition-opacity duration-150 ease-in-out hover:opacity-75 sm:rounded-full sm:text-[13px]"
-    >
-      <div className="relative z-20 px-4 py-2.5 text-center leading-none sm:px-3 sm:py-2">
-        {label}
-      </div>
-      {targetElement && (
-        <motion.div
-          initial="fadeOut"
-          animate="fadeIn"
-          variants={fadeVariants}
-          className="absolute -inset-0.5 z-30 grid place-items-center rounded-[inherit] bg-(--nav-progress-bg) leading-none text-(--nav-progress-text)"
-          style={{ clipPath }}
-        >
-          {label}
-        </motion.div>
-      )}
-    </Link>
-  );
-};
-`;
-const IN_PAGE_NAVBAR_TYPES_TS = `import { MotionValue } from "motion";
+import { useIsServer } from "@/hooks/use-is-server";
+import { type MotionValue } from "motion";
 
 interface NavSection {
   label: string;
@@ -259,91 +73,219 @@ interface NavItemProps extends NavSection {
 }
 
 interface InPageNavbarProps {
-  Logo: React.ReactNode;
+  logo: React.ReactNode;
   sections: NavSection[];
 }
 
-export type { InPageNavbarProps, NavButtonGroupProps, NavItemProps };
-`;
-const BURGER_ICON_TSX = `const BurgerIcon = () => (
-  <svg viewBox="0 0 16 16" width="16" height="16" fill="none">
-    <path
-      stroke="var(--nav-text)"
-      strokeLinecap="square"
-      strokeWidth="2px"
-      d="M2 4h12M2 12h12"
-      fill="none"
-    />
-  </svg>
-);
+const fadeVariants: Variants = {
+  fadeIn: { opacity: 1 },
+  fadeOut: { opacity: 0 },
+};
 
-export default BurgerIcon;
-`;
-const CLOSE_ICON_TSX = `const CloseIcon = () => (
-  <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-    <path
-      stroke="var(--nav-text)"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-      d="M17.25 6.75L6.75 17.25"
-    />
-    <path
-      stroke="var(--nav-text)"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-      d="M6.75 6.75L17.25 17.25"
-    />
-  </svg>
-);
+export function InPageNavbar({ logo, sections }: InPageNavbarProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isSmallScreen, setIsSmallScreen] = React.useState(false);
 
-export default CloseIcon;
+  const isServer = useIsServer();
+
+  const navButtons = (
+    <NavButtonGroup
+      sections={sections}
+      isServer={isServer}
+      className="gap-2 max-sm:mx-auto max-sm:grid max-sm:max-w-fit max-sm:grid-rows-3 max-sm:py-8 max-sm:text-sm sm:flex sm:items-center sm:gap-1"
+    />
+  );
+
+  React.useEffect(() => {
+    const handleMediaQuery = ({ matches }: { matches: boolean }) =>
+      setIsSmallScreen(matches);
+
+    const mediaQuery = window.matchMedia("(max-width:639px)");
+    mediaQuery.addEventListener("change", handleMediaQuery);
+
+    return () => mediaQuery.removeEventListener("change", handleMediaQuery);
+  }, []);
+
+  return (
+    <>
+      <div className="[&_*]:focus-visible:ring-ring pointer-events-none fixed inset-x-4.5 top-1.5 z-[100] focus-visible:ring-offset-current [&_*]:focus-visible:ring-1 [&_*]:focus-visible:ring-offset-2 [&_*]:focus-visible:outline-none">
+        <motion.div
+          initial={false}
+          animate={isSidebarOpen && isSmallScreen ? "fadeOut" : "fadeIn"}
+          variants={fadeVariants}
+          className="bg-card/85 pointer-events-auto mx-auto flex max-w-xl items-center justify-between rounded-lg p-3 text-sm font-medium shadow-md backdrop-blur-[2px] sm:rounded-xl"
+        >
+          <a
+            href="#"
+            tabIndex={1}
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.pushState(null, "", window.location.pathname);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
+            {logo}
+          </a>
+          <>
+            <nav className="hidden sm:block">{navButtons}</nav>
+            <button
+              tabIndex={2}
+              aria-label="open sidebar"
+              onClick={() => {
+                setIsSmallScreen(true);
+                setIsSidebarOpen(true);
+              }}
+              className="-mr-2 cursor-pointer px-1 sm:hidden"
+            >
+              <EqualIcon className="stroke-foreground" />
+            </button>
+          </>
+        </motion.div>
+      </div>
+      <AnimatePresence>
+        {isSmallScreen && isSidebarOpen && (
+          <motion.div
+            initial="fadeOut"
+            animate="fadeIn"
+            exit="fadeOut"
+            variants={fadeVariants}
+            className="bg-card/85 fixed inset-x-4.5 top-1.5 z-[110] overflow-hidden rounded-lg"
+          >
+            <button
+              tabIndex={3}
+              aria-label="close sidebar"
+              onClick={() => setIsSidebarOpen(false)}
+              className="absolute top-3.5 right-2 cursor-pointer"
+            >
+              <XIcon className="stroke-foreground" />
+            </button>
+            <nav>{navButtons}</nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+function NavButtonGroup({
+  sections,
+  isServer,
+  className,
+}: NavButtonGroupProps) {
+  const { scrollY } = useScroll();
+
+  return (
+    <nav className={className}>
+      {sections.map((props) => (
+        <NavItem
+          key={props.id}
+          scrollY={scrollY}
+          isServer={isServer}
+          {...props}
+        />
+      ))}
+    </nav>
+  );
+}
+
+function NavItem({ label, id, isServer, scrollY }: NavItemProps) {
+  const [targetElement, setTargetElement] = React.useState<HTMLElement | null>(
+    null,
+  );
+
+  const sectionProgress = useTransform(scrollY, (latest) => {
+    if (isServer || !targetElement) return 0;
+
+    const viewportHeight = window.innerHeight;
+    const targetElementTop = targetElement.offsetTop;
+    const targetElementHeight = targetElement.offsetHeight;
+
+    const visibleRatio =
+      (latest + viewportHeight - targetElementTop) / targetElementHeight;
+
+    return Math.min(1, Math.max(visibleRatio, 0));
+  });
+
+  const clipPath = useTransform(
+    sectionProgress,
+    [0, 1],
+    ["inset(0% 100% 0% 0%)", "inset(0% 0% 0% 0%)"],
+  );
+
+  React.useEffect(() => {
+    const element = document.getElementById(id);
+    if (!element) {
+      console.warn(\`No section found with id="\${id}".\`);
+    }
+    setTargetElement(element);
+  }, [id]);
+
+  return (
+    <a
+      tabIndex={2}
+      href={\`#\${id}\`}
+      onClick={(e) => {
+        e.preventDefault();
+        window.history.pushState(null, "", \`#\${id}\`);
+        targetElement?.scrollIntoView({ behavior: "smooth" });
+      }}
+      className="bg-background border-border relative overflow-hidden rounded-full border font-medium capitalize transition-opacity duration-100 ease-in-out hover:opacity-70 sm:text-[13px]"
+    >
+      <span className="relative z-20 inline-block size-full px-4 py-2.5 text-center leading-none sm:px-3 sm:py-2">
+        {label}
+      </span>
+
+      {targetElement && (
+        <motion.span
+          initial="fadeOut"
+          animate="fadeIn"
+          variants={fadeVariants}
+          style={{ clipPath }}
+          className="bg-muted text-muted-foreground absolute -inset-0.5 z-30 grid place-items-center rounded-[inherit] leading-none"
+        >
+          {label}
+        </motion.span>
+      )}
+    </a>
+  );
+}
 `;
-const TITLE = "In-Page Navbar";
+const TITLE = "In-page navbar";
 const DESCRIPTION =
-  "A smart navigation bar that tracks the section progress as you scroll down the page providing a clear visual indicator of your progress through each section.";
+    "A smart navigation bar that tracks the section progress as you scroll down the page, providing a clear visual indicator of your progress through each section. This Navbar is best suited for single-page applications (SPAs).",
+  USAGE = {
+    title: TITLE,
+    code: IN_PAGE_NAVBAR_DEMO_TSX,
+  };
+
+const USE_IS_SERVER = `import * as React from "react";
+
+export function useIsServer() {
+  const isServer = React.useRef(typeof window === "undefined");
+  return isServer.current;
+}
+`;
 const ROOT_DIRECTORY: DirectoryItem[] = [
   {
     name: "components",
     type: "directory",
     items: [
       {
-        name: "in-page-navbar",
-        type: "directory",
-        items: [
-          {
-            name: "in-page-navbar.demo.tsx",
-            type: "file",
-            code: IN_PAGE_NAVBAR_DEMO_TSX,
-          },
-          {
-            name: "index.tsx",
-            type: "file",
-            code: INDEX_TSX,
-          },
-
-          {
-            name: "in-page-navbar.types.ts",
-            type: "file",
-            code: IN_PAGE_NAVBAR_TYPES_TS,
-          },
-          {
-            name: "icons",
-            type: "directory",
-            items: [
-              { name: "burger.icon.tsx", type: "file", code: BURGER_ICON_TSX },
-              { name: "close.icon.tsx", type: "file", code: CLOSE_ICON_TSX },
-            ],
-          },
-        ],
+        name: "in-page-navbar.tsx",
+        type: "file",
+        code: IN_PAGE_NAVBAR_TSX,
       },
     ],
   },
+  {
+    name: "hooks",
+    type: "directory",
+    items: [{ name: "use-is-server.ts", type: "file", code: USE_IS_SERVER }],
+  },
 ];
 const DEFAULT_ACTIVE_FILE: ActiveFile = {
-  absolutePath: "components/in-page-navbar/in-page-navbar.demo.tsx",
-  code: IN_PAGE_NAVBAR_DEMO_TSX,
+  absolutePath: "components/in-page-navbar.tsx",
+  code: IN_PAGE_NAVBAR_TSX,
 };
 
 const PROP_TABLE: PropTableProps = {
@@ -391,7 +333,7 @@ const ADDITIONAL_INFORMATION: ListContainerProps[] = [
     title: "Good to know:",
     variant: "pro-tips",
     list: [
-      "Place the component at the end of your component tree or page layout to guarantee that all the target sections are already mounted and accessible.",
+      "Use this component at the very end of your page or page layout so it can correctly detect and track all the sections above it.",
     ],
   },
 ];
@@ -402,4 +344,5 @@ export {
   DEFAULT_ACTIVE_FILE,
   PROP_TABLE,
   ADDITIONAL_INFORMATION,
+  USAGE,
 };

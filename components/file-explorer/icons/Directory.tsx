@@ -1,14 +1,18 @@
 const DirectoryIcon = () => (
-  <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <svg
+    width="24"
+    height="24"
+    fill="none"
+    viewBox="0 0 24 24"
+    className="stroke-foreground"
+  >
     <path
-      stroke="#202020"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="1.5"
       d="M19.25 17.25V9.75C19.25 8.64543 18.3546 7.75 17.25 7.75H4.75V17.25C4.75 18.3546 5.64543 19.25 6.75 19.25H17.25C18.3546 19.25 19.25 18.3546 19.25 17.25Z"
     ></path>
     <path
-      stroke="#202020"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="1.5"

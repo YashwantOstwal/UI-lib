@@ -7,7 +7,7 @@ import FileTree from "./file-tree";
 import CopiedFilesTrackerProvider from "./providers/CopiedFilesTrackerProvider";
 import ActiveFileProvider from "./providers/ActiveFileProvider";
 import CodeCard from "./code-card";
-import GetStartedButton from "./get-started-button";
+import { TrackerToggler } from "./tracker-toggler";
 import { cn } from "@/lib/utils";
 
 export default function FileExplorer({
@@ -23,15 +23,15 @@ export default function FileExplorer({
     <ActiveFileProvider defaultActiveFile={defaultActiveFile}>
       <div
         className={cn(
-          "relative mt-3.5 flex w-full rounded-2xl bg-[#fcfcfc] text-sm shadow-[0px_8px_12px_-4px_rgba(15,12,12,0.08),_0px_0px_2px_0px_rgba(15,12,12,0.10),_0px_1px_2px_0px_rgba(15,12,12,0.10)] md:p-2",
+          "md:bg-layout relative isolate mt-3.5 flex w-full rounded-2xl text-sm shadow-[0px_8px_12px_-4px_rgba(15,12,12,0.08),_0px_0px_2px_0px_rgba(15,12,12,0.10),_0px_1px_2px_0px_rgba(15,12,12,0.10)] md:p-1.5 dark:shadow-[0_4px_12px_rgba(0,0,0,0.35),0_1px_rgba(255,255,255,0.05)_inset]",
           className,
         )}
         {...rest}
       >
-        <div className="min-w-80 pr-2.5 text-[#202020] max-md:hidden">
+        <div className="min-w-80 pr-2.5 max-md:hidden">
           <CopiedFilesTrackerProvider>
             <div className="flex items-center justify-between p-2 font-medium">
-              Root Dir. <GetStartedButton />
+              100xui <TrackerToggler />
             </div>
             <FileTree rootDirectory={enhancedRootDirectory} />
           </CopiedFilesTrackerProvider>

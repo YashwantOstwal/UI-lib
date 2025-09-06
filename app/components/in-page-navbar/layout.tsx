@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import InPageNavbarDemo from "@/components/in-page-navbar/in-page-navbar.demo";
+import { InPageNavbarDemo } from "@/components/(package)/in-page-navbar/in-page-navbar.demo";
 
 export const metadata: Metadata = {
   title: "In-Page-Navbar",

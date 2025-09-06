@@ -7,9 +7,14 @@ import {
   ROOT_DIRECTORY,
   PROP_TABLE,
   ADDITIONAL_INFORMATION,
+  USAGE,
 } from "./page.data";
 import PlaceHolder from "@/components/place-holder";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+};
 export default function InPageNavbarPage() {
   return (
     <>
@@ -43,6 +48,8 @@ export default function InPageNavbarPage() {
             />
           ))}
         </div>
+        <Container.Usage id="usage" title={TITLE} code={USAGE.code} />
+        <Container.Cli title={TITLE} />
         <Container.FileExplorer
           id="file-explorer"
           defaultActiveFile={DEFAULT_ACTIVE_FILE}

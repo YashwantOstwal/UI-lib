@@ -35,11 +35,11 @@ export default function Directory({
     <div className="w-full space-y-0.5">
       <button
         className={cn(
-          "flex w-full items-center justify-between gap-1 rounded-md py-1 outline-none hover:bg-[#e4e4e4]/50 focus:bg-[#e4e4e4]/50 focus-visible:bg-[#e4e4e4]/50",
+          "hover:bg-accent/75 focus:bg-accent/75 focus-visible:bg-accent/75 flex w-full items-center justify-between gap-1 rounded-md py-1 outline-none",
           isCopyTrackerOn &&
             (filesNotCopiedCount === 0
-              ? "bg-green-200/25 hover:bg-green-200/50 focus:bg-green-200/50 focus-visible:bg-green-200/50"
-              : "bg-red-200/25 hover:bg-red-200/50 focus:bg-red-200/50 focus-visible:bg-red-200/50"),
+              ? "bg-green-300/25 hover:bg-green-300/40 focus:bg-green-300/40 focus-visible:bg-green-300/40"
+              : "bg-red-300/25 hover:bg-red-300/40 focus:bg-red-300/40 focus-visible:bg-red-300/40"),
         )}
         style={{ paddingLeft: `calc(${level} * var(--indent))` }}
         onClick={handleSubTree}
@@ -50,8 +50,9 @@ export default function Directory({
           <span>{name}</span>
           {isCopyTrackerOn && (
             <input
-              className="size-3.5 accent-green-600"
+              className="size-3.5 accent-green-600 dark:accent-green-400"
               onChange={(e) => {
+                e.stopPropagation();
                 const isChecked = e.currentTarget.checked;
                 dispatchCopiedFiles?.({
                   type: isChecked ? "ADD" : "REMOVE",
@@ -60,6 +61,7 @@ export default function Directory({
               }}
               type="checkbox"
               onKeyDown={(e) => {
+                e.stopPropagation();
                 if (e.key !== "Enter") return;
                 const newStatus = !e.currentTarget.checked;
                 dispatchCopiedFiles?.({
@@ -67,6 +69,7 @@ export default function Directory({
                   items: descendentFiles,
                 });
               }}
+              onClick={(e) => e.stopPropagation()}
               checked={filesNotCopiedCount === 0}
             />
           )}

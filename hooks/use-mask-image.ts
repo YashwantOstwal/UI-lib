@@ -1,5 +1,5 @@
 import { MotionValue, useTransform } from "motion/react";
-import useIsServer from "./use-is-server";
+import { useIsServer } from "./use-is-server";
 import { useEffect, useState } from "react";
 export default function useMaskImage(
   localProgress: MotionValue<number>,
