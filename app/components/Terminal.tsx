@@ -8,10 +8,10 @@ import { useState } from "react";
 type packageManagers = "pnpm" | "npm" | "bun" | "yarn";
 export default function Terminal({ title }: { title: string }) {
   const clis: Record<packageManagers, string> = {
-    pnpm: `pnpm dlx shadcn@latest add http://100xui.com/components/${title.toLocaleLowerCase().replace(" ", "-")}.json`,
-    npm: `npx shadcn@latest add http://100xui.com/components/${title.toLocaleLowerCase().replace(" ", "-")}.json`,
-    yarn: `yarn shadcn@latest add http://100xui.com/components/${title.toLocaleLowerCase().replace(" ", "-")}.json`,
-    bun: `bun --bun shadcn@latest add http://100xui.com/components/${title.toLocaleLowerCase().replace(" ", "-")}.json`,
+    pnpm: `pnpm dlx shadcn@latest add http://ui-lib-steel.vercel.app/components/${title.toLocaleLowerCase().replace(" ", "-")}.json`,
+    npm: `npx shadcn@latest add http://ui-lib-steel.vercel.app/components/${title.toLocaleLowerCase().replace(" ", "-")}.json`,
+    yarn: `yarn shadcn@latest add http://ui-lib-steel.vercel.app/components/${title.toLocaleLowerCase().replace(" ", "-")}.json`,
+    bun: `bun --bun shadcn@latest add http://ui-lib-steel.vercel.app/components/${title.toLocaleLowerCase().replace(" ", "-")}.json`,
   } as const;
 
   const [state, setState] = useState<packageManagers>("pnpm");
