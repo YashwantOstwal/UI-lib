@@ -1,16 +1,7 @@
-"use client";
-
 import * as React from "react";
+import StickyShowcase from "./_components/sticky-showcase";
 export default function Page() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      {/* <Wrapper> */}
-      <ChildA />
-      <ChildB />
-      <ChildC />
-      {/* </Wrapper> */}
-    </div>
-  );
+  return <StickyShowcase />;
 }
 
 // const Wrapper = ({ children }: { children: React.ReactElement[] }) => {
@@ -22,15 +13,6 @@ export default function Page() {
 //     </>
 //   );
 // };
-const ChildA = () => {
-  return <div>ChildA</div>;
-};
-const ChildB = () => {
-  return <div>ChildB</div>;
-};
-const ChildC = () => {
-  return <div>ChildC</div>;
-};
 
 // function Temp({ children }: { children: ReactNode[] }) {
 //   children.forEach((child) => {

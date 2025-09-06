@@ -5,14 +5,19 @@ import { useTheme } from "next-themes";
 import { SunIcon, MoonIcon, MonitorIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function ModeToggle() {
+export function ModeToggle({ className }: { className?: string }) {
   const [mounted, setMounted] = React.useState(false);
   const { systemTheme, theme, setTheme } = useTheme();
   React.useEffect(() => {
     setMounted(true);
   }, []);
   return (
-    <div className="bg-background/75 border-border/50 mr-1 flex items-center gap-x-1 rounded-full border p-0.5 backdrop-blur-[2px] lg:pointer-events-auto">
+    <div
+      className={cn(
+        "bg-background/75 border-border/50 mr-1 flex items-center gap-x-1 rounded-full border p-0.5 backdrop-blur-[2px] lg:pointer-events-auto",
+        className,
+      )}
+    >
       <div className="bg-muted border-border/50 flex gap-x-0.75 rounded-full border p-0.5 [&_svg]:size-6 [&_svg]:stroke-[2] [&_svg]:p-1">
         <button
           className={cn(

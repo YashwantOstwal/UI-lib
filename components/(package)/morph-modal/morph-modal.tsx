@@ -108,7 +108,7 @@ MorphModal.Modal = function MorphModalModal({
           animate={{ backgroundColor: "rgba(0,0,0,0.5)" }}
           exit={{ backgroundColor: "rgba(0,0,0,0)" }}
           transition={{ duration, ease }}
-          className="fixed inset-0 flex flex-col items-center justify-center"
+          className="fixed inset-0 isolate z-[200] flex flex-col items-center justify-center"
           onClick={() => setOpen(false)}
         >
           <motion.div

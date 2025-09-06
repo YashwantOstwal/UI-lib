@@ -68,7 +68,7 @@ Container.Usage = function ContainerUsage({
   code,
   ...rest
 }: { title: string } & CodeCanvasProps & ComponentProps<"div">) {
-  const absolutePath = `components/${title.toLocaleLowerCase().replace(" ", "-")}.demo.tsx`;
+  const absolutePath = `components/${title.toLocaleLowerCase().replaceAll(" ", "-")}.demo.tsx`;
 
   return (
     <div {...rest}>

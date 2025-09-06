@@ -16,7 +16,7 @@ export default function Accordian({
       onClick={() => handleClick(i)}
       layoutId={`accordians[${i}]`}
       className={cn(
-        "relative isolate mb-2 flex w-full flex-col gap-y-1 overflow-hidden bg-gradient-to-b from-[#f5f5f5] via-[#f5f5f5] via-[max(calc(100%-35px),60%)] to-transparent px-3 py-2 text-left text-base text-(--foreground) lg:max-w-lg lg:text-lg",
+        "relative isolate mb-2 flex w-full flex-col gap-y-1 overflow-hidden from-[#f5f5f5] via-[#f5f5f5] via-[max(calc(100%-35px),60%)] to-transparent px-3 py-2 text-left text-sm text-(--foreground) max-lg:bg-gradient-to-b lg:max-w-lg lg:text-base",
         state !== i && "cursor-pointer max-lg:hidden",
       )}
     >
@@ -24,7 +24,7 @@ export default function Accordian({
         initial={{ opacity: state === i ? 1 : 0.75 }}
         animate={{ opacity: state === i ? 1 : 0.75 }}
         layoutId={`labels[${i}] relative z-10`}
-        className="text-base lg:text-xl"
+        className=":text-sm lg:text-base"
       >
         {title}
       </motion.div>

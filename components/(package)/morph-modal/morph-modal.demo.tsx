@@ -1,7 +1,8 @@
 "use client";
 
-import { MorphModal } from "./morph-modal";
 import { PlayIcon } from "lucide-react";
+
+import { MorphModal } from "./morph-modal";
 
 export function MorphModalDemo() {
   return (

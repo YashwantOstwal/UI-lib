@@ -34,18 +34,22 @@ export default function Page() {
       {/* <Roblox /> */}
       <div className="mx-auto mt-12 grid max-w-3xl grid-cols-1 gap-x-3 gap-y-2.5 sm:grid-cols-2">
         {[
+          { name: "Parallax cards", href: "/components/parallax-cards" },
           {
-            name: "Spinning Carousel",
+            name: "Spinning carousel",
             href: "/components/spinning-carousel",
           },
-          { name: "Motion toolbar", href: "/components/motion-dock" },
-          { name: "Parallax cards", href: "/components/parallax-cards" },
+          { name: "Motion dock", href: "/components/motion-dock" },
+          { name: "In-page navbar", href: "/components/in-page-navbar" },
           {
             name: "Parallax container",
             href: "/components/parallax-container",
           },
-          { name: "Text Switcher", href: "/components/text-switcher" },
-          { name: "In-Page Navbar", href: "/components/in-page-navbar" },
+          { name: "Text switcher", href: "/components/text-switcher" },
+          { name: "Menu wheel", href: "/components/menu-wheel" },
+          { name: "Morph modal", href: "/components/morph-modal" },
+          { name: "Sticky showcase", href: "/components/sticky-showcase" },
+          { name: "Mask text server", href: "/components/mask-text-server" },
         ].map((props) => (
           <Card key={props.href} {...props} />
         ))}

@@ -25,15 +25,15 @@ const maskVariants = {
   },
 };
 
-export function MaskText({ children }: { children: ReactNode }) {
+export function MaskTextServer({ children }: { children: ReactNode }) {
   return children;
 }
 
-MaskText.ByLines = function MaskTextByLines({
+MaskTextServer.ByLines = function MaskTextServerByLines({
   render,
   splitToken = "\n",
   transition = { duration: 0.4 },
-  staggerLines = 0.1,
+  staggerLines = 0.5,
   className,
   ...rest
 }: {
@@ -56,7 +56,7 @@ MaskText.ByLines = function MaskTextByLines({
   breakpoints.forEach((breakpoint, i) => {
     cssStyle += `
       .mask-text-${breakpoint} {
-        display: none;
+        display:none;
       }
   
       @media (min-width: ${breakpoint}) ${breakpoints[i + 1] ? `and (max-width: calc(${breakpoints[i + 1]} - 0.02px))` : ""} {
@@ -111,10 +111,10 @@ MaskText.ByLines = function MaskTextByLines({
     </>
   );
 };
-MaskText.ByWords = function MaskTextByWords({
+MaskTextServer.ByWords = function MaskTextServerByWords({
   render,
   transition = { duration: 0.4 },
-  staggerWords = 0.1,
+  staggerWords = 0.25,
   className,
   textAlign = "left",
   ...rest
@@ -164,9 +164,9 @@ MaskText.ByWords = function MaskTextByWords({
   );
 };
 
-MaskText.ByLetters = function MaskTextByLetters({
+MaskTextServer.ByLetters = function MaskTextServerByLetters({
   render,
-  staggerLetters = 0.01,
+  staggerLetters = 0.05,
   className,
   transition = { duration: 0.4 },
   ...rest

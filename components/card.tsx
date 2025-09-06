@@ -39,7 +39,7 @@ const Card = ({ name, href }: CardProps) => (
         //   },
         // }}
 
-        className="from-secondary to-secondary-70 text-secondary-foreground border-secondary/70 mt-1 flex items-center justify-center rounded-[10px] border bg-gradient-to-b via-50% px-3.5 py-2 text-lg [&>svg]:size-5"
+        className="from-secondary to-secondary-70 bg-secondary text-secondary-foreground border-secondary/70 bg--to-b mt-1 flex items-center justify-center rounded-[10px] border via-50% px-3.5 py-2 text-lg [&>svg]:size-5"
       >
         <ComponentIcon
           variants={lineDrawVariants}
